@@ -187,6 +187,12 @@ A regenerative capital loop.
 
 ---
 
+## 📲 **PBPE Marketplace Architecture**
+
+![PBPE Marketplace Architecture](docs/architecture/pbpe-architecture.svg)
+
+---
+
 ## 🌍 **Vision**
 
 PBPE Marketplace aims to establish **planetary value as a global asset class**,  
