@@ -130,6 +130,7 @@ PBPE provides:
 
 ### **10.3 If BlackRock adopts PBPE**
 
-- ESG市場は **“PBPE型インパクト金融”** に再定義
-- PBPE Index / PBPE Funds が世界標準に
-- ESG疲れが解消し、**実物インパクト金融が主流化**
+- ESG market shifts to **PBPE‑based real‑world impact finance**
+- PBPE becomes a global standard
+- ESG fatigue disappears
+- Capital flows into regenerative agriculture at scale
