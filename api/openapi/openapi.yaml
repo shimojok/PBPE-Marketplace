@@ -1,0 +1,196 @@
+openapi: 3.1.0
+info:
+  title: PBPE Marketplace API
+  version: 0.1.0
+  description: >
+    The PBPE Marketplace API provides access to PBPE issuance, settlement,
+    rating, project data, and ledger transactions. This is a draft specification
+    and will evolve as the system architecture is refined.
+
+servers:
+  - url: https://api.pbpe-marketplace.example.com
+    description: Draft server placeholder
+
+paths:
+
+  /projects:
+    get:
+      summary: List all registered PBPE projects
+      responses:
+        '200':
+          description: A list of PBPE projects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Project'
+
+  /projects/{projectId}:
+    get:
+      summary: Get details of a specific PBPE project
+      parameters:
+        - name: projectId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Project details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+
+  /pbpe/issue:
+    post:
+      summary: Issue new PBPE units based on validated impact data
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PBPEIssueRequest'
+      responses:
+        '201':
+          description: PBPE units issued
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PBPEIssueResponse'
+
+  /pbpe/settle:
+    post:
+      summary: Settle PBPE units between accounts or contracts
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PBPESettleRequest'
+      responses:
+        '200':
+          description: Settlement result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PBPESettleResponse'
+
+  /pbpe/rating:
+    post:
+      summary: Generate a PBPE rating score for a project or PBPE batch
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PBPERatingRequest'
+      responses:
+        '200':
+          description: Rating result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PBPERatingResponse'
+
+  /ledger/transactions:
+    get:
+      summary: List ledger transactions
+      responses:
+        '200':
+          description: Ledger transaction list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LedgerTransaction'
+
+components:
+  schemas:
+
+    Project:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        location:
+          type: string
+        description:
+          type: string
+        status:
+          type: string
+          enum: [active, inactive, archived]
+
+    PBPEIssueRequest:
+      type: object
+      properties:
+        projectId:
+          type: string
+        impactData:
+          type: object
+        methodology:
+          type: string
+
+    PBPEIssueResponse:
+      type: object
+      properties:
+        pbpeId:
+          type: string
+        quantity:
+          type: number
+        issuedAt:
+          type: string
+          format: date-time
+
+    PBPESettleRequest:
+      type: object
+      properties:
+        fromAccount:
+          type: string
+        toAccount:
+          type: string
+        pbpeId:
+          type: string
+        quantity:
+          type: number
+
+    PBPESettleResponse:
+      type: object
+      properties:
+        transactionId:
+          type: string
+        status:
+          type: string
+
+    PBPERatingRequest:
+      type: object
+      properties:
+        pbpeId:
+          type: string
+        parameters:
+          type: object
+
+    PBPERatingResponse:
+      type: object
+      properties:
+        rating:
+          type: number
+        confidence:
+          type: number
+
+    LedgerTransaction:
+      type: object
+      properties:
+        transactionId:
+          type: string
+        type:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        details:
+          type: object
