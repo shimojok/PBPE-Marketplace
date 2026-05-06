@@ -1,0 +1,52 @@
+// PBPE Marketplace – Ledger Database Schema (Draft)
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Project {
+  id          String        @id @default(cuid())
+  name        String
+  location    String?
+  description String?
+  status      String        @default("active")
+  batches     PBPEBatch[]
+}
+
+model PBPEBatch {
+  id          String             @id @default(cuid())
+  project     Project            @relation(fields: [projectId], references: [id])
+  projectId   String
+  quantity    Float
+  methodology String
+  issuedAt    DateTime           @default(now())
+  metadata    Json?
+  transactions LedgerTransaction[]
+}
+
+model Account {
+  id          String             @id @default(cuid())
+  name        String
+  type        String
+  sent        LedgerTransaction[] @relation("SentTransactions")
+  received    LedgerTransaction[] @relation("ReceivedTransactions")
+}
+
+model LedgerTransaction {
+  id          String      @id @default(cuid())
+  type        String
+  timestamp   DateTime    @default(now())
+  fromAccount Account?    @relation("SentTransactions", fields: [fromAccountId], references: [id])
+  fromAccountId String?
+  toAccount   Account?    @relation("ReceivedTransactions", fields: [toAccountId], references: [id])
+  toAccountId String?
+  pbpeBatch   PBPEBatch   @relation(fields: [pbpeBatchId], references: [id])
+  pbpeBatchId String
+  quantity    Float
+  metadata    Json?
+}
