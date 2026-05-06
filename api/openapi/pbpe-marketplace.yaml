@@ -1,0 +1,66 @@
+openapi: 3.1.0
+info:
+  title: PBPE Marketplace API
+  version: 0.1.0
+  description: >
+    API for accessing PBPE financial products, orders, settlements, and registry.
+servers:
+  - url: https://api.pbpe.market
+paths:
+  /products:
+    get:
+      summary: List PBPE financial products
+      responses:
+        '200':
+          description: A list of products
+  /orders:
+    post:
+      summary: Create an order for a PBPE product
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateOrderRequest'
+      responses:
+        '201':
+          description: Order created
+  /settlements/{product_id}:
+    get:
+      summary: Get settlements for a product
+      parameters:
+        - name: product_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Settlement list
+  /registry/{pbpe_id}:
+    get:
+      summary: Get PBPE registry entry
+      parameters:
+        - name: pbpe_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: PBPE registry record
+components:
+  schemas:
+    CreateOrderRequest:
+      type: object
+      properties:
+        investor_id:
+          type: string
+        product_id:
+          type: string
+        amount:
+          type: number
+      required:
+        - investor_id
+        - product_id
+        - amount
