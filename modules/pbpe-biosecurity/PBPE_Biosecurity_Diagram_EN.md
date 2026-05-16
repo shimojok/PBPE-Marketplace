@@ -1,4 +1,4 @@
-# 🧩 PBPE‑Biosecurity Diagram (English Version)
+# 🧩 PBPE‑Biosecurity Diagram
 
 A structural diagram showing how **MBT55 Biosecurity** integrates into  
 the **PBPE Marketplace**, converting biological improvements into  
