@@ -1,296 +1,260 @@
-# 📘 **PBPE Integrated I/O Specification**
+# PBPE‑Marketplace API Specification
 
-### _AGRIX × MBT-Biosecurity-Engine × HealthBook × MBT Probiotics_
+### Marketplace & External Integration Layer — API Contract
 
-### _→ PBPE-Dashboard → PBPE-Finance → PBPE-Marketplace_
-
----
-
-# 🌍 **0. Overview — Planetary Biosecurity OS Data Flow**
-
-PBPE のデータフローは以下の 5 レイヤーで構成される：
-
-1. **AGRIX-OS（Phenomics & Sensors）**
-2. **MBT-Biosecurity-Engine（12 KPIs）**
-3. **HealthBook-AI（One Health / Antibiotics / Zoonotic Risk）**
-4. **MBT Probiotics（Livestock / Gut / Fermentation）**
-5. **PBPE-Dashboard（Economic Layer）**
-6. **PBPE-Finance（Financial Layer）**
-7. **PBPE-Marketplace（Platform Layer）**
+### Version 1.0 (Canonical English Edition)
 
 ---
 
-# 🧬 **1. AGRIX-OS I/O Specification**
+## 1. Purpose
 
-### _Real-time phenomics, soil, climate, and yield intelligence_
+This document defines the **public API contract** for PBPE‑Marketplace.  
+PBPE‑Marketplace exposes PBPE financial products, credits, and impact data to:
 
-AGRIX は PBPE の **“物理世界 → デジタル世界” の入口**。
+- Corporate buyers
+- Foundations & DFIs
+- Institutional investors
+- Developers & integrators
 
----
-
-## **1.1 AGRIX → MBT-Biosecurity-Engine（Input）**
-
-|Data|Type|Description|
-|---|---|---|
-|Soil moisture|float|0–1|
-|Soil temperature|float|°C|
-|Soil pH|float|0–14|
-|Soil EC|float|mS/cm|
-|Soil organic matter|float|%|
-|Soil nitrogen (N)|float|ppm|
-|Soil phosphorus (P)|float|ppm|
-|Soil potassium (K)|float|ppm|
-|Microclimate humidity|float|0–1|
-|Microclimate temperature|float|°C|
-|Leaf wetness|float|0–1|
-|NDVI / EVI|float|Vegetation index|
-|Canopy temperature|float|°C|
-|Yield baseline|float|t/ha|
-|Disease early signals|dict|CLR, Fusarium, Downy Mildew|
+This specification is authoritative for all external integrations.
 
 ---
 
-## **1.2 AGRIX ← MBT-Biosecurity-Engine（Output）**
+# 2. Authentication
 
-|Output|Description|
+### **Auth Method**
+
+- OAuth2 (Client Credentials or Authorization Code)
+- JWT bearer tokens
+
+### **Scopes**
+
+|Scope|Description|
 |---|---|
-|Disease_Risk_Model output|Risk 0–1|
-|Microbial_Simulation output|P-M-N dynamics|
-|Soil_Carbon_Model output|SOC trajectory|
-|Price_Stability_Model input|Yield CV|
-
-AGRIX は **MBT55 の効果をリアルタイムで検証する**。
+|read:products|Read financial products|
+|read:credits|Read credit balances|
+|read:impact|Read impact metrics|
+|write:orders|Submit investment/purchase orders|
+|read:reports|Access ESG / Scope 3 reports|
 
 ---
 
-## **1.3 AGRIX → PBPE-Dashboard（Output）**
+# 3. Core API Endpoints
 
-|Data|Description|
+---
+
+## 3.1 GET /api/v1/products
+
+**Description:**  
+Returns all available PBPE financial products.
+
+**Response (array of ProductSummary):**
+
+|Field|Type|
 |---|---|
-|Yield (actual)|t/ha|
-|Disease incidence|%|
-|Soil carbon baseline|tC/ha|
-|Microclimate anomalies|risk flags|
-|Crop stress index|0–1|
+|product_id|string|
+|product_type|string|
+|name|string|
+|description|string|
+|notional_usd|float|
+|expected_return_pct|float|
+|tenor_years|float|
+|risk_score|float|
+|underlying_credits_summary|object|
+|impact_summary|object|
 
 ---
 
-# 🧠 **2. MBT-Biosecurity-Engine I/O Specification**
+## 3.2 GET /api/v1/products/{product_id}
 
-### _12 KPIs — The core of PBPE_
+**Description:**  
+Returns detailed information for a specific financial product.
 
-MBT-Biosecurity-Engine は PBPE の **“科学計算エンジン”**。
+**Response: ProductDetail**
 
----
-
-## **2.1 Inputs（from AGRIX, MBT Probiotics, HealthBook）**
-
-|Input|Source|
+|Field|Type|
 |---|---|
-|Soil parameters|AGRIX|
-|Climate parameters|AGRIX|
-|Disease signals|AGRIX|
-|Livestock infection data|MBT Probiotics|
-|Antibiotic usage|HealthBook|
-|Gut microbiome metrics|MBT Probiotics|
-|MBT55 application data|Field logs|
+|product_id|string|
+|product_type|string|
+|product_terms|object|
+|underlying_credits|object|
+|historical_performance|object|
+|impact_breakdown|object|
 
 ---
 
-## **2.2 Outputs（12 KPIs）**
+## 3.3 GET /api/v1/credits/{tenant_id}
 
-|KPI|Description|
+**Description:**  
+Returns credit balances for a tenant.
+
+**Response: CreditBalance**
+
+|Field|Type|
 |---|---|
-|1. Disease Loss Reduction|%|
-|2. Yield Gain|%|
-|3. Quality Premium Score|composite|
-|4. Anti-Spoilage Effect|%|
-|5. Food Loss Reduction|t|
-|6. Cost Reduction Index|USD|
-|7. Livestock Biosecurity Score|0–1|
-|8. ΔC (Soil Carbon)|tC/ha|
-|9. GHG Reduction|tCO₂e|
-|10. Price Stability Index|0–1|
-|11. PBPE-Biosecurity Value|USD|
-|12. Biosecurity ROI|%|
+|biosecurity_credits_balance|float|
+|carbon_credits_balance|float|
+|food_loss_credits_balance|float|
+|quality_credits_balance|float|
+|price_stability_credits_balance|float|
 
 ---
 
-# 🩺 **3. HealthBook-AI I/O Specification**
+## 3.4 POST /api/v1/orders
 
-### _One Health × Antibiotics × Zoonotic Risk_
+**Description:**  
+Submits a purchase or redemption order for a financial product.
 
-HealthBook は PBPE の **“人間・家畜・環境の統合健康レイヤー”**。
+**Request: OrderRequest**
 
----
-
-## **3.1 HealthBook → MBT-Biosecurity-Engine（Input）**
-
-|Data|Description|
+|Field|Type|
 |---|---|
-|Antibiotic use (kg)|Livestock|
-|Infection rate|%|
-|Gut dysbiosis markers|SCFA, LPS|
-|Zoonotic risk index|0–1|
-|Animal mortality|%|
+|tenant_id|string|
+|product_id|string|
+|amount_usd|float|
+|order_type|string (subscribe / redeem)|
 
----
+**Response: OrderResponse**
 
-## **3.2 HealthBook ← MBT-Biosecurity-Engine（Output）**
-
-|Output|Description|
+|Field|Type|
 |---|---|
-|Livestock_Biosecurity_Score|0–1|
-|Antibiotic reduction|%|
-|Infection reduction|%|
-|Enteric methane reduction|%|
+|order_id|string|
+|status|string|
+|settlement_date|string (ISO8601)|
 
 ---
 
-## **3.3 HealthBook → PBPE-Dashboard（Output）**
+## 3.5 GET /api/v1/impact/{tenant_id}
 
-|Data|Description|
+**Description:**  
+Returns impact metrics for a tenant (ESG + climate + social).
+
+**Response: ImpactReport**
+
+|Field|Type|
 |---|---|
-|One Health Index|0–1|
-|Antibiotic reduction|%|
-|Zoonotic risk reduction|%|
-|Livestock productivity gain|%|
+|total_ghg_reduction_tco2e|float|
+|total_delta_c_tc|float|
+|total_food_loss_reduction_t|float|
+|supported_farmers_count|int|
+|average_farmer_income_uplift_pct|float|
+|sector_breakdown|object|
+|region_breakdown|object|
 
 ---
 
-## **3.4 HealthBook → PBPE-Finance（Output）**
+## 3.6 GET /api/v1/scope3/{tenant_id}
 
-|Credit Type|Description|
+**Description:**  
+Returns Scope 3 emissions reduction data for corporate buyers.
+
+**Response: Scope3Report**
+
+|Field|Type|
 |---|---|
-|Blue Credits|Avoided healthcare cost|
-|One Health Credits|Zoonotic risk reduction|
+|scope3_reduction_tco2e|float|
+|methodology_reference|string|
+|verification_status|string|
+|reporting_period|string|
 
 ---
 
-# 🐄 **4. MBT Probiotics I/O Specification**
-
-### _Livestock × Gut Microbiome × Methane Reduction_
-
-MBT Probiotics は PBPE の **“家畜バイオセキュリティ層”**。
+# 4. Data Model Definitions
 
 ---
 
-## **4.1 MBT Probiotics → MBT-Biosecurity-Engine（Input）**
+## 4.1 ProductSummary
 
-|Data|Description|
+|Field|Type|
 |---|---|
-|SCFA levels|gut health|
-|Methane (enteric)|kg|
-|FCR (feed conversion ratio)|efficiency|
-|Infection rate|%|
-|Antibiotic use|kg|
-|Manure decomposition rate|hours|
+|product_id|string|
+|product_type|string|
+|name|string|
+|description|string|
+|notional_usd|float|
+|expected_return_pct|float|
+|tenor_years|float|
+|risk_score|float|
+|underlying_credits_summary|object|
+|impact_summary|object|
 
 ---
 
-## **4.2 MBT Probiotics ← MBT-Biosecurity-Engine（Output）**
+## 4.2 ProductDetail
 
-|Output|Description|
+|Field|Type|
 |---|---|
-|Livestock_Biosecurity_Score|0–1|
-|Methane reduction|%|
-|FCR improvement|%|
-|Antibiotic reduction|%|
+|product_id|string|
+|product_type|string|
+|product_terms|object|
+|underlying_credits|object|
+|historical_performance|object|
+|impact_breakdown|object|
 
 ---
 
-## **4.3 MBT Probiotics → PBPE-Dashboard（Output）**
+## 4.3 CreditBalance
 
-|Data|Description|
+|Field|Type|
 |---|---|
-|Enteric methane reduction|tCO₂e|
-|Livestock productivity|%|
-|Antibiotic reduction|%|
+|biosecurity_credits_balance|float|
+|carbon_credits_balance|float|
+|food_loss_credits_balance|float|
+|quality_credits_balance|float|
+|price_stability_credits_balance|float|
 
 ---
 
-## **4.4 MBT Probiotics → PBPE-Finance（Output）**
+## 4.4 OrderRequest
 
-|Credit Type|Description|
+|Field|Type|
 |---|---|
-|Livestock Carbon Credits|CH₄ reduction|
-|Biosecurity Credits|infection reduction|
-|Food Loss Credits|mortality reduction|
+|tenant_id|string|
+|product_id|string|
+|amount_usd|float|
+|order_type|string|
 
 ---
 
-# 📊 **5. PBPE-Dashboard I/O Specification**
+## 4.5 OrderResponse
 
-### _Economic Visualization Layer_
-
-PBPE-Dashboard receives:
-
-- 12 KPIs
-- One Health metrics
-- Livestock metrics
-- AGRIX phenomics
-- Carbon & GHG metrics
-- Price stability metrics
-
-And outputs:
-
-- PBPE-Biosecurity Value
-- PBPE Credits
-- Farmer income uplift
-- Supply chain stability
-- Regional impact maps
+| Field           | Type   |
+| --------------- | ------ |
+| order_id        | string |
+| status          | string |
+| settlement_date | string |
 
 ---
 
-# 💱 **6. PBPE-Finance I/O Specification**
+## 4.6 ImpactReport
 
-### _Financial Structuring Layer_
-
-PBPE-Finance receives:
-
-- PBPE Credits
-- PBPE-Biosecurity Value
-- Carbon Credits
-- Food Loss Credits
-- Quality Credits
-- Price Stability Credits
-
-And outputs:
-
-- Financial products
-- Credit issuance
-- Portfolio dashboards
-- Verification reports
+|Field|Type|
+|---|---|
+|total_ghg_reduction_tco2e|float|
+|total_delta_c_tc|float|
+|total_food_loss_reduction_t|float|
+|supported_farmers_count|int|
+|average_farmer_income_uplift_pct|float|
+|sector_breakdown|object|
+|region_breakdown|object|
 
 ---
 
-# 🏛️ **7. PBPE-Marketplace I/O Specification**
+## 4.7 Scope3Report
 
-### _Platform Layer_
-
-PBPE-Marketplace receives:
-
-- Credits
-- Financial products
-- Verification data
-
-And outputs:
-
-- Buyer dashboards
-- Corporate Scope 3 reports
-- Transaction records
-- Market analytics
+|Field|Type|
+|---|---|
+|scope3_reduction_tco2e|float|
+|methodology_reference|string|
+|verification_status|string|
+|reporting_period|string|
 
 ---
 
-# 🧩 **8. Unified I/O Table（全レイヤー統合表）**
+# 5. Versioning
 
-|Engine|Input|Output|Consumed by|
-|---|---|---|---|
-|AGRIX|Sensors, climate|Yield, disease, soil|MBT-Biosecurity, Dashboard|
-|MBT-Biosecurity|AGRIX, HealthBook, Probiotics|12 KPIs|Dashboard, Finance|
-|HealthBook|Livestock, antibiotics|One Health metrics|Dashboard, Finance|
-|MBT Probiotics|Gut, methane|Livestock metrics|Dashboard, Finance|
-|PBPE-Dashboard|12 KPIs, One Health|PBPE Value, Credits|Finance|
-|PBPE-Finance|Credits, PBPE Value|Financial products|Marketplace|
-|PBPE-Marketplace|Products, credits|Buyers, corporates|External world|
+- API versioning follows `/api/v{number}/`
+- Breaking changes increment the major version
+- Non‑breaking additions increment the minor version
+
+---
