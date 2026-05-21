@@ -10,7 +10,6 @@ This document defines the initial backend implementation for the PBPE Marketplac
 
 backend/ ├── main.py ├── routers/ │ ├── credits.py │ ├── products.py │ ├── impact.py │ └── users.py └── models/ ├── credits.py ├── impact.py └── users.py
 
-
 ---
 
 # 2. main.py
@@ -25,7 +24,7 @@ app.include_router(credits.router, prefix="/credits")
 app.include_router(products.router, prefix="/products")
 app.include_router(impact.router, prefix="/impact")
 app.include_router(users.router, prefix="/users")
-
+```
 
 ---
 
@@ -54,6 +53,7 @@ def buy_credits(req: CreditRequest):
         total_cost_usd=req.total_cost()
     )
 
+```
 
 ---
 
@@ -73,6 +73,7 @@ def get_scope3():
         verification_level="MBT55 Evidence + KPI Model"
     )
 
+```
 
 ---
 
@@ -91,7 +92,8 @@ def register_user():
 def authenticate():
     return {"token": "sample-token"}
 
-
+```
 ---
 
 This backend provides the foundation for PBPE Marketplace API operations.
+
