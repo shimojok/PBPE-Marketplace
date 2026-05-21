@@ -1,0 +1,138 @@
+# PBPE Marketplace API  
+OpenAPI 3.1 Specification  
+Version 1.0 – English Edition
+
+The PBPE Marketplace API enables enterprises to access PBPE Credits, Scope 3 impact data, and product information.
+
+---
+
+openapi: 3.1.0
+info:
+  title: PBPE Marketplace API
+  version: "1.0.0"
+  description: >
+    API for purchasing PBPE Credits, retrieving credit prices, accessing Scope 3 impact,
+    and managing enterprise portfolios.
+
+servers:
+  - url: https://api.pbpe.marketplace/v1
+
+paths:
+
+  /credits/price:
+    get:
+      summary: Get current PBPE Credit prices
+      responses:
+        "200":
+          description: Credit price list
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreditPriceResponse"
+
+  /credits/buy:
+    post:
+      summary: Purchase PBPE Credits
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreditPurchaseRequest"
+      responses:
+        "200":
+          description: Credits issued
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreditPurchaseResponse"
+
+  /credits/portfolio:
+    get:
+      summary: Get enterprise credit portfolio
+      responses:
+        "200":
+          description: Portfolio summary
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PortfolioResponse"
+
+  /impact/scope3:
+    get:
+      summary: Retrieve Scope 3 impact reductions
+      responses:
+        "200":
+          description: Scope 3 impact summary
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Scope3Response"
+
+  /users/register:
+    post:
+      summary: Register a new enterprise user
+      responses:
+        "200":
+          description: Registration success
+
+  /users/auth:
+    post:
+      summary: Authenticate and obtain API token
+      responses:
+        "200":
+          description: Authentication success
+
+components:
+  schemas:
+
+    CreditPriceResponse:
+      type: object
+      properties:
+        Biosecurity:
+          type: number
+        Carbon:
+          type: number
+        FoodLoss:
+          type: number
+        Quality:
+          type: number
+        Stability:
+          type: number
+
+    CreditPurchaseRequest:
+      type: object
+      properties:
+        kpi:
+          type: object
+          description: KPI payload from PBPE Dashboard
+        credit_types:
+          type: array
+          items:
+            type: string
+
+    CreditPurchaseResponse:
+      type: object
+      properties:
+        credits_issued:
+          type: object
+        total_cost_usd:
+          type: number
+
+    PortfolioResponse:
+      type: object
+      properties:
+        holdings:
+          type: object
+        total_value_usd:
+          type: number
+
+    Scope3Response:
+      type: object
+      properties:
+        scope3_reduction_tco2e:
+          type: number
+        delta_c_tc:
+          type: number
+        verification_level:
+          type: string
