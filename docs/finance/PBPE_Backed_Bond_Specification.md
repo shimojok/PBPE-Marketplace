@@ -50,11 +50,11 @@ Base idea:
 If PBPE issuance and impact exceed a predefined floor,  
 the coupon increases; if they fall below, coupon is reduced (within bounds).
 
-$$
+\[
 \text{Coupon} = r_0 
 + \alpha \cdot \frac{\text{PBPE}_{\text{actual}} - \text{PBPE}_{\text{floor}}}{\text{PBPE}_{\text{floor}}}
 + \beta \cdot \frac{\text{Impact}_{\text{actual}} - \text{Impact}_{\text{floor}}}{\text{Impact}_{\text{floor}}}
-$$
+\]
 
 Where:
 
