@@ -172,7 +172,7 @@ Layer 1: MBT‑Biosecurity‑Engine Layer 2: PBPE Dashboard (KPI Engine) Layer 3
 ```
 
 Architecture diagram:  
-`docs/architecture/pbpe-architecture.svg`
+![PBPE Marketplace Architecture](docs/architecture/pbpe-architecture.svg)
 
 ---
 
