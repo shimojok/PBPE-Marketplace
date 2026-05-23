@@ -76,7 +76,7 @@ Each credit type is backed by verifiable impact data and follows a unified issua
 
 ## 3.2 Calculation Formula
 
-[ \text{Carbon PBPE} = \text{Verified GHG Reduction (tCO₂e)} ]
+$$ \text{Carbon PBPE} = \text{Verified GHG Reduction (tCO₂e)} $$
 
 ## 3.3 Data Sources
 
@@ -97,7 +97,7 @@ Each credit type is backed by verifiable impact data and follows a unified issua
 
 ## 4.2 Calculation Formula
 
-[ \text{Biosecurity PBPE} = \text{Risk Reduction Index} \times \text{Coverage Area (ha)} \times \text{Duration (years)} ]
+$$ \text{Biosecurity PBPE} = \text{Risk Reduction Index} \times \text{Coverage Area (ha)} \times \text{Duration (years)} $$
 
 ## 4.3 Data Sources
 
@@ -114,7 +114,7 @@ Each credit type is backed by verifiable impact data and follows a unified issua
 
 ## 5.2 Calculation Formula
 
-[ \text{Food Loss PBPE} = \text{Food Loss Avoided (t)} \times \beta ]
+$$ \text{Food Loss PBPE} = \text{Food Loss Avoided (t)} \times \beta $$
 
 β = tCO₂e conversion factor + food security coefficient
 
@@ -130,7 +130,7 @@ Each credit type is backed by verifiable impact data and follows a unified issua
 
 ## 6.2 Calculation Formula
 
-[ \text{Quality PBPE} = \text{Nutrition Index Improvement} \times \text{Volume (t)} ]
+$$ \text{Quality PBPE} = \text{Nutrition Index Improvement} \times \text{Volume (t)} $$
 
 ## 6.3 Data Sources
 
