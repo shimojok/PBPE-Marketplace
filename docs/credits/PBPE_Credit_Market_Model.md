@@ -54,4 +54,35 @@ $$
 
 ---
 
+## 4. Dynamic Adjustment (Implemented)
+
+API:
+
+- `GET /credits/price?demand_index=&liquidity_index=&volatility_index=`
+
+Adjustment:
+
+$$
+\text{AdjFactor} = 1+ 0.3 \cdot \text{DemandIndex}+ 0.2 \cdot \text{LiquidityIndex}- 0.2 \cdot \text{VolatilityIndex}
+$$
+
+Final price:
+
+$$
+\text{Price}_{\text{final}} = \text{BasePrice} \times \text{AdjFactor}
+$$
+
+---
+
+This dynamic adjustment model is implemented in:
+
+- backend/routers/credits.py (`GET /credits/price`)
+- frontend MarketView (dynamic price UI)
+
+This ensures PBPE Credits behave as a real market asset with:
+- demand-driven pricing
+- liquidity sensitivity
+- volatility penalty
+
+---
 PBPE Credit Market turns verified impact into a transparent, priceable asset class.
