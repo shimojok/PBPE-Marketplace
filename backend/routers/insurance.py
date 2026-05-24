@@ -10,6 +10,7 @@ from models.insurance import (
 
 router = APIRouter()
 
+
 @router.get("/insurance/products", response_model=InsuranceProductList)
 def list_insurance_products():
     products = [
