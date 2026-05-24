@@ -3,7 +3,7 @@ import { getCreditMarket } from "../../api/dashboard";
 import { CreditsMarketTable } from "../../components/tables/CreditsMarketTable";
 
 export default function MarketView() {
-  const [market, setMarket] = useState(null);
+  const [market, setMarket] = useState<any | null>(null);
 
   useEffect(() => {
     getCreditMarket().then(setMarket);
