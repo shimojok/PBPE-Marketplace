@@ -339,6 +339,47 @@ paths:
               schema:
                 $ref: '#/components/schemas/BondPortfolioResponse'
 
+    /finance/insurance/products:
+    get:
+      summary: List PBPE insurance products
+      operationId: listInsuranceProducts
+      responses:
+        '200':
+          description: Insurance products
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InsuranceProductList'
+
+  /finance/insurance/quote:
+    post:
+      summary: Get PBPE insurance premium quote
+      operationId: getInsuranceQuote
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InsuranceQuoteRequest'
+      responses:
+        '200':
+          description: Insurance quote
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InsuranceQuoteResponse'
+
+  /finance/insurance/policies:
+    get:
+      summary: List PBPE insurance policies
+      operationId: listInsurancePolicies
+      responses:
+        '200':
+          description: Insurance policies
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InsurancePolicyList'
 
 components:
   schemas:
