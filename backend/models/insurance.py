@@ -6,7 +6,7 @@ class InsuranceProduct(BaseModel):
     id: str
     name: str
     description: str
-    coverage_type: str  # e.g. "biosecurity", "yield", "climate"
+    coverage_type: str  # "biosecurity", "yield", "climate"
 
 
 class InsuranceProductList(BaseModel):
