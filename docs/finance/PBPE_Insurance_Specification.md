@@ -18,11 +18,9 @@ PBPE Insurance provides risk transfer products linked to:
 
 ## 2. Premium Formula
 
-\[
-\text{Premium} = \phi_1 \cdot \text{BiosecurityRisk}
-+ \phi_2 \cdot \text{YieldVolatility}
-- \phi_3 \cdot \text{StabilityIndex}
-\]
+$$
+\text{Premium} = \phi_1 \cdot \text{BiosecurityRisk}+ \phi_2 \cdot \text{YieldVolatility}- \phi_3 \cdot \text{StabilityIndex}
+$$
 
 ---
 
