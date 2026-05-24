@@ -9,6 +9,7 @@ import MarketView from "./pages/Dashboard/MarketView";
 import FinanceView from "./pages/Dashboard/FinanceView";
 import EnterpriseView from "./pages/Dashboard/EnterpriseView";
 import PBPEIssuanceView from "./pages/Dashboard/PBPEIssuanceView";
+import InsurancePage from "./pages/Insurance";
 
 export default function App() {
   return (
@@ -24,6 +25,7 @@ export default function App() {
         <Route path="/dashboard/finance" element={<FinanceView />} />
         <Route path="/dashboard/enterprise" element={<EnterpriseView />} />
         <Route path="/dashboard/pbpe" element={<PBPEIssuanceView />} />
+        <Route path="/finance/insurance" element={<InsurancePage />} />
 
       </Routes>
     </BrowserRouter>
