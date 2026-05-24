@@ -32,4 +32,26 @@ Where:
 
 ---
 
+## 3. Dynamic Adjustment
+
+Let:
+
+- DemandIndex: 0–1 (enterprise demand)
+- LiquidityIndex: 0–1 (volume / depth)
+- VolatilityIndex: 0–1 (price stability)
+
+Then:
+
+$$
+\text{AdjFactor} = 1+ 0.3 \cdot \text{DemandIndex}+ 0.2 \cdot \text{LiquidityIndex}- 0.2 \cdot \text{VolatilityIndex}
+$$
+
+Final price:
+
+$$
+\text{Price}_{\text{final}} = \text{BasePrice} \times \text{AdjFactor}
+$$
+
+---
+
 PBPE Credit Market turns verified impact into a transparent, priceable asset class.
