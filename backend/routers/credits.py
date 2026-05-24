@@ -36,9 +36,21 @@ def _base_prices() -> CreditPriceResponse:
 
 
 @router.get("/price", response_model=CreditPriceResponse)
-def get_credit_prices():
-    # 現時点では固定＋将来は市場データに接続
-    return _base_prices()
+def get_credit_prices(
+    demand_index: float = 0.5,
+    liquidity_index: float = 0.5,
+    volatility_index: float = 0.3,
+):
+    base = _base_prices()
+    adj = 1.0 + 0.3 * demand_index + 0.2 * liquidity_index - 0.2 * volatility_index
+
+    return CreditPriceResponse(
+        Biosecurity=base.Biosecurity * adj,
+        Carbon=base.Carbon * adj,
+        FoodLoss=base.FoodLoss * adj,
+        Quality=base.Quality * adj,
+        Stability=base.Stability * adj,
+    )
 
 
 @router.post("/buy", response_model=CreditPurchaseResponse)
