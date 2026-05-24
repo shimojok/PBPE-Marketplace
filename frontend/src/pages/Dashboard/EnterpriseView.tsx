@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { getEnterpriseUsage } from "../../api/dashboard";
 
 export default function EnterpriseView() {
-  const [usage, setUsage] = useState(null);
+  const [usage, setUsage] = useState<any | null>(null);
 
   useEffect(() => {
     getEnterpriseUsage().then(setUsage);
