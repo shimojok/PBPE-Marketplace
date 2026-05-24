@@ -12,12 +12,9 @@ PBPE Credits:
 
 ## 1. Price Formation
 
-\[
-\text{Price} = \theta_1 \cdot \text{ImpactQuality}
-+ \theta_2 \cdot \text{Demand}
-+ \theta_3 \cdot \text{Liquidity}
-+ \theta_4 \cdot \text{VerificationLevel}
-\]
+$$
+\text{Price} = \theta_1 \cdot \text{ImpactQuality}+ \theta_2 \cdot \text{Demand}+ \theta_3 \cdot \text{Liquidity}+ \theta_4 \cdot \text{VerificationLevel}
+$$
 
 Where:
 
