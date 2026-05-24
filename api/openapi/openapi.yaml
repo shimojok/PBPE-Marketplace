@@ -793,3 +793,75 @@ components:
             $ref: '#/components/schemas/BondPortfolioItem'
         total_value_usd:
           type: number
+
+    ###############################################
+    # INSURANCE SCHEMAS
+    ###############################################
+
+    InsuranceProduct:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        coverage_type:
+          type: string
+
+    InsuranceProductList:
+      type: object
+      properties:
+        products:
+          type: array
+          items:
+            $ref: '#/components/schemas/InsuranceProduct'
+
+    InsuranceQuoteRequest:
+      type: object
+      properties:
+        farm_id:
+          type: string
+        region:
+          type: string
+        biosecurity_risk:
+          type: number
+        yield_volatility:
+          type: number
+        stability_index:
+          type: number
+        coverage_type:
+          type: string
+
+    InsuranceQuoteResponse:
+      type: object
+      properties:
+        premium_usd_per_year:
+          type: number
+        coverage_limit_usd:
+          type: number
+        deductible_usd:
+          type: number
+
+    InsurancePolicy:
+      type: object
+      properties:
+        policy_id:
+          type: string
+        product_id:
+          type: string
+        premium_usd_per_year:
+          type: number
+        coverage_limit_usd:
+          type: number
+        status:
+          type: string
+
+    InsurancePolicyList:
+      type: object
+      properties:
+        policies:
+          type: array
+          items:
+            $ref: '#/components/schemas/InsurancePolicy'
