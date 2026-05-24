@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from routers import credits, impact, users, products, dashboard, bonds
+from routers import credits, impact, users, products, dashboard, bonds, insurance
 
 app = FastAPI(
     title="PBPE Marketplace API",
@@ -13,3 +13,4 @@ app.include_router(users.router, prefix="/users", tags=["users"])
 app.include_router(products.router, prefix="/products", tags=["products"])
 app.include_router(dashboard.router, prefix="/dashboard", tags=["dashboard"])
 app.include_router(bonds.router, prefix="/finance", tags=["bonds"])
+app.include_router(insurance.router, prefix="/finance", tags=["insurance"])
