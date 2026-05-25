@@ -296,29 +296,28 @@ paths:
   # FINANCE / BONDS API
   ###############################################
 
-  /finance/bonds:
+    /finance/bonds:
     get:
-      summary: List PBPE-backed bonds
+      summary: List PBPE bonds
       operationId: listBonds
       responses:
         '200':
-          description: Bond list
+          description: PBPE bonds
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BondListResponse'
+                $ref: '#/components/schemas/BondList'
 
   /finance/bonds/price:
-    get:
-      summary: Get PBPE-backed bond price and yield
-      operationId: getBondPrice
-      parameters:
-        - name: bond_id
-          in: query
-          required: false
-          schema:
-            type: string
-            default: PBPE-GLOBAL-2035
+    post:
+      summary: Price a PBPE bond
+      operationId: priceBond
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BondPriceRequest'
       responses:
         '200':
           description: Bond price
