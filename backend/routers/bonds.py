@@ -50,3 +50,45 @@ def get_bond_portfolio():
         items=[item],
         total_value_usd=item.market_value_usd,
     )
+
+
+@router.post("/bonds/price", response_model=BondPriceResponse)
+def price_bond(req: BondPriceRequest):
+    bonds = {b.bond_id: b for b in _sample_bonds()}
+    bond = bonds.get(req.bond_id)
+    if not bond:
+        bond = _sample_bonds()[0]
+
+    y = req.yield_percent / 100.0
+    r0 = bond.coupon_percent / 100.0
+
+    pbpe_actual = req.pbpe_actual or bond.pbpe_floor
+    impact_actual = req.impact_actual or bond.impact_floor
+    pbpe_floor = req.pbpe_floor or bond.pbpe_floor
+    impact_floor = req.impact_floor or bond.impact_floor
+
+    alpha = 0.5
+    beta = 0.5
+
+    coupon = (
+        r0
+        + alpha * (pbpe_actual - pbpe_floor) / max(pbpe_floor, 1.0)
+        + beta * (impact_actual - impact_floor) / max(impact_floor, 1.0)
+    )
+    coupon = max(0.0, min(coupon, 0.12))  # 0–12%
+
+    T = bond.maturity_year - 2025
+    if T < 1:
+        T = 1
+
+    price = 0.0
+    for t in range(1, T + 1):
+        price += coupon / math.pow(1 + y, t)
+    price += 1.0 / math.pow(1 + y, T)
+
+    return BondPriceResponse(
+        bond_id=bond.bond_id,
+        yield_percent=req.yield_percent,
+        price_percent_of_par=price * 100.0,
+        coupon_percent_effective=coupon * 100.0,
+    )
