@@ -1,4 +1,5 @@
 import React from "react";
+import "./KPIcard.css";
 
 export const KPIcard = ({ label, value, subtext }) => (
   <div className="kpi-card">
