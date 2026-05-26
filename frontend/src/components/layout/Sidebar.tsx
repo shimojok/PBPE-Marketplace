@@ -1,11 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import "./Sidebar.css";
 
 export default function Sidebar() {
   return (
     <div className="sidebar">
-      <h3>PBPE Dashboard v3</h3>
-
+      <h3>Navigation</h3>
       <ul>
         <li><Link to="/dashboard/kpis">Global KPIs</Link></li>
         <li><Link to="/dashboard/impact">GHG Breakdown</Link></li>
