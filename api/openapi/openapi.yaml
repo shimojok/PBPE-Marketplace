@@ -763,6 +763,26 @@ components:
           items:
             $ref: '#/components/schemas/Bond'
 
+    BondPriceRequest:
+      type: object
+      properties:
+        bond_id:
+          type: string
+        yield_percent:
+          type: number
+        pbpe_actual:
+          type: number
+          nullable: true
+        pbpe_floor:
+          type: number
+          nullable: true
+        impact_actual:
+          type: number
+          nullable: true
+        impact_floor:
+          type: number
+          nullable: true
+
     BondPriceResponse:
       type: object
       properties:
@@ -771,6 +791,8 @@ components:
         yield_percent:
           type: number
         price_percent_of_par:
+          type: number
+        coupon_percent_effective:
           type: number
 
     BondPortfolioItem:
