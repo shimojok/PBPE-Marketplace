@@ -4,9 +4,13 @@ const api = axios.create({
   baseURL: "https://pbpe-backend-production.up.railway.app",
 });
 
-api.interceptors.request.use(config => {
+// ここで毎回 Token を自動で付与する
+api.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
-  if (token) config.headers["token"] = token;
+  if (token) {
+    config.headers = config.headers || {};
+    config.headers["token"] = token;
+  }
   return config;
 });
 
