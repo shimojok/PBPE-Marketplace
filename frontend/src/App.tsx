@@ -11,6 +11,18 @@ import EnterpriseView from "./pages/Dashboard/EnterpriseView";
 import PBPEIssuanceView from "./pages/Dashboard/PBPEIssuanceView";
 import InsurancePage from "./pages/Insurance";
 import BondPricingPage from "./pages/Bonds/Pricing";
+import { LanguageContext } from "./i18n/LanguageContext";
+
+function App() {
+  const [lang, setLang] = useState<"en" | "ja">("en");
+
+  return (
+    <LanguageContext.Provider value={{ lang, setLang }}>
+      {/* 既存のルーティング・レイアウトをそのまま包む */}
+      <AppLayout />
+    </LanguageContext.Provider>
+  );
+}
 
 export default function App() {
   return (
