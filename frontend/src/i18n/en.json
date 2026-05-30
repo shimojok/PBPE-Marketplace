@@ -1,0 +1,19 @@
+{
+  "dashboard": {
+    "global_kpis": "Global KPIs",
+    "impact": "Impact Breakdown",
+    "market": "PBPE Credits Market",
+    "finance": "PBPE Finance",
+    "enterprise": "Enterprise Scope 3",
+    "pbpe": "PBPE Issuance"
+  },
+  "kpis": {
+    "title": "PBPE Dashboard v3 – Global KPIs",
+    "total_pbpe": "Total PBPE",
+    "ghg_reduction": "GHG Reduction (tCO₂e)",
+    "soil_carbon": "Soil Carbon",
+    "biosecurity": "Biosecurity",
+    "health": "Health",
+    "stability": "Stability"
+  }
+}
