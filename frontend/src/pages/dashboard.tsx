@@ -1,5 +1,4 @@
 import { useState } from "react";
-import ProtectedRoute from "../components/ProtectedRoute";
 import api from "../api";
 
 export default function Dashboard() {
@@ -10,7 +9,6 @@ export default function Dashboard() {
     try {
       setLoading(true);
 
-      // Scope3 のダミーデータ（後で実データに置き換え可能）
       const payload = {
         sample: "data",
       };
@@ -26,19 +24,16 @@ export default function Dashboard() {
   };
 
   return (
-    <ProtectedRoute>
-      <main style={{ padding: 32 }}>
-        <h1>PBPE Dashboard</h1>
+    <main style={{ padding: 32 }}>
+      <h1>PBPE Dashboard</h1>
 
-        {/* ← このボタンが Scope3 を送信する */}
-        <button onClick={handleConvertScope3} disabled={loading}>
-          {loading ? "Converting..." : "Convert Scope3"}
-        </button>
+      <button onClick={handleConvertScope3} disabled={loading}>
+        {loading ? "Converting..." : "Convert Scope3"}
+      </button>
 
-        <pre style={{ marginTop: 24, background: "#f5f5f5", padding: 16 }}>
-          {result ? JSON.stringify(result, null, 2) : "No result yet"}
-        </pre>
-      </main>
-    </ProtectedRoute>
+      <pre style={{ marginTop: 24, background: "#f5f5f5", padding: 16 }}>
+        {result ? JSON.stringify(result, null, 2) : "No result yet"}
+      </pre>
+    </main>
   );
 }
