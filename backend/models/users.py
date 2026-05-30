@@ -1,16 +1,7 @@
 from pydantic import BaseModel
 
+# 認証で使うユーザーモデル（統一版）
 class User(BaseModel):
-    user_id: str
+    id: int | None = None
     email: str
-    password: str  # 実運用ではハッシュ化
-    
-class UserRegisterRequest(BaseModel):
-    company_name: str
-    email: str
-
-class AuthRequest(BaseModel):
-    api_key: str
-
-class AuthResponse(BaseModel):
-    token: str
+    password: str
