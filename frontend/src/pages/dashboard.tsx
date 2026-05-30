@@ -10,7 +10,7 @@ export default function Dashboard() {
     try {
       setLoading(true);
 
-      // 実際の Scope3 データに置き換えてください
+      // Scope3 のダミーデータ（後で実データに置き換え可能）
       const payload = {
         sample: "data",
       };
@@ -30,6 +30,7 @@ export default function Dashboard() {
       <main style={{ padding: 32 }}>
         <h1>PBPE Dashboard</h1>
 
+        {/* ← このボタンが Scope3 を送信する */}
         <button onClick={handleConvertScope3} disabled={loading}>
           {loading ? "Converting..." : "Convert Scope3"}
         </button>
