@@ -1,12 +1,14 @@
-import { useT } from "../../../i18n/useT";
+<div className="dashboard-page">
 
-export default function Enterprise() {
-  const t = useT();
+  <h1>{t("enterprise.title")}</h1>
 
-  return (
-    <main>
-      <h2>{t("dashboard.enterprise")}</h2>
-      <p>Enterprise dashboard content here...</p>
-    </main>
-  );
-}
+  <Scope3Summary data={data.summary} />
+
+  <div className="chart-row">
+    <Scope3BreakdownChart data={data.breakdown} />
+    <PBPEConversionChart data={data.pbpe_conversion} />
+  </div>
+
+  <EnterprisePortfolio data={data.portfolio} />
+
+</div>
