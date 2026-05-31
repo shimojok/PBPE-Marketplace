@@ -1,6 +1,4 @@
-<div className="dashboard-page">
-
-  <h1>{t("finance.title")}</h1>
+<Page title={t("finance.title")}>
 
   <BondPricingSimulator />
 
@@ -9,4 +7,4 @@
     <InsuranceProducts data={insurance.products} />
   </div>
 
-</div>
+</Page>
