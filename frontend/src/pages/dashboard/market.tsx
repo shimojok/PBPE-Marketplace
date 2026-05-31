@@ -1,12 +1,19 @@
-import { useT } from "../../../i18n/useT";
+<div className="dashboard-page">
 
-export default function Market() {
-  const t = useT();
+  <h1>{t("market.title")}</h1>
 
-  return (
-    <main>
-      <h2>{t("dashboard.market")}</h2>
-      <p>Market dashboard content here...</p>
-    </main>
-  );
-}
+  <MarketControls
+    demand={demand}
+    liquidity={liquidity}
+    volatility={volatility}
+    onChange={updateMarketParams}
+  />
+
+  <CreditsPriceTable prices={prices} />
+
+  <div className="chart-row">
+    <PriceHistoryChart data={history} />
+    <MarketDepthChart data={depth} />
+  </div>
+
+</div>
