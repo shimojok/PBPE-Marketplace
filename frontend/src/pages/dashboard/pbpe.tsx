@@ -1,12 +1,12 @@
-import { useT } from "../../../i18n/useT";
+<div className="dashboard-page">
 
-export default function PBPE() {
-  const t = useT();
+  <h1>{t("pbpe.title")}</h1>
 
-  return (
-    <main>
-      <h2>{t("dashboard.pbpe")}</h2>
-      <p>PBPE issuance dashboard content here...</p>
-    </main>
-  );
-}
+  <PBPEIssuanceTimeline data={data.timeline} />
+
+  <div className="chart-row">
+    <PBPEComponentsChart data={data.components} />
+    <PBPERegistryTable data={data.registry} />
+  </div>
+
+</div>
