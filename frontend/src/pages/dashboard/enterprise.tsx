@@ -1,6 +1,4 @@
-<div className="dashboard-page">
-
-  <h1>{t("enterprise.title")}</h1>
+<Page title={t("enterprise.title")}>
 
   <Scope3Summary data={data.summary} />
 
@@ -11,4 +9,4 @@
 
   <EnterprisePortfolio data={data.portfolio} />
 
-</div>
+</Page>
