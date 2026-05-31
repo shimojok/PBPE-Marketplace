@@ -1,38 +1,47 @@
 import React, { useEffect, useState } from "react";
-import { getDashboardSummary } from "../../api/dashboard";
-import { KPIcard } from "../../components/cards/KPIcard";
+import { useT } from "../../i18n/useT";
+import { getGlobalKPIs } from "../../api/dashboard"; // 既存API想定
 
-export default function GlobalKPIs() {
-  const [summary, setSummary] = useState<any | null>(null);
+export default function GlobalKPIsPage() {
+  const t = useT();
+  const [data, setData] = useState<any | null>(null);
 
   useEffect(() => {
-    getDashboardSummary().then(setSummary);
+    getGlobalKPIs().then(setData);
   }, []);
 
-  if (!summary) return null;
+  if (!data) return null;
 
   return (
-    <div className="kpi-row">
-      <KPIcard
-        label="GHG Reduction"
-        value={`${summary.ghg_reduction_tco2e_per_year} tCO₂e / year`}
-        subtext="Annual reduction"
-      />
-      <KPIcard
-        label="PBPE Issued"
-        value={summary.pbpe_issued_per_year}
-        subtext="PBPE / year"
-      />
-      <KPIcard
-        label="PBPE Market Value"
-        value={`$${summary.pbpe_market_value_usd_per_year}`}
-        subtext="USD / year"
-      />
-      <KPIcard
-        label="Green Premium"
-        value={`${summary.green_premium_jpy_per_year} JPY / year`}
-        subtext="Negative premium"
-      />
+    <div className="dashboard-page">
+      <h1>{t("kpis.title")}</h1>
+
+      <div className="kpi-grid">
+        <div className="kpi-card">
+          <div className="kpi-label">{t("kpis.total_pbpe")}</div>
+          <div className="kpi-value">{data.total_pbpe.toLocaleString()}</div>
+        </div>
+        <div className="kpi-card">
+          <div className="kpi-label">{t("kpis.ghg_reduction")}</div>
+          <div className="kpi-value">{data.ghg_reduction_tco2e}</div>
+        </div>
+        <div className="kpi-card">
+          <div className="kpi-label">{t("kpis.soil_carbon")}</div>
+          <div className="kpi-value">{data.soil_carbon_tc}</div>
+        </div>
+        <div className="kpi-card">
+          <div className="kpi-label">{t("kpis.biosecurity")}</div>
+          <div className="kpi-value">{data.biosecurity_index}</div>
+        </div>
+        <div className="kpi-card">
+          <div className="kpi-label">{t("kpis.health")}</div>
+          <div className="kpi-value">{data.health_index}</div>
+        </div>
+        <div className="kpi-card">
+          <div className="kpi-label">{t("kpis.stability")}</div>
+          <div className="kpi-value">{data.stability_index}</div>
+        </div>
+      </div>
     </div>
   );
 }
