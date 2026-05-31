@@ -1,8 +1,5 @@
-<div className="dashboard-page">
+<Page title={t("kpis.title")}>
 
-  <h1>{t("kpis.title")}</h1>
-
-  {/* KPI Grid */}
   <div className="kpi-grid">
     <KpiCard label={t("kpis.total_pbpe")} value={data.total_pbpe} />
     <KpiCard label={t("kpis.ghg_reduction")} value={data.ghg_reduction_tco2e} />
@@ -12,10 +9,9 @@
     <KpiCard label={t("kpis.stability")} value={data.stability_index} />
   </div>
 
-  {/* Charts */}
   <div className="chart-row">
     <GHGStackedBar data={data.ghg_breakdown} />
     <PBPEIssuanceDonut data={data.pbpe_components} />
   </div>
 
-</div>
+</Page>
