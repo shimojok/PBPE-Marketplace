@@ -1,12 +1,12 @@
-import { useT } from "../../../i18n/useT";
+<div className="dashboard-page">
 
-export default function Finance() {
-  const t = useT();
+  <h1>{t("finance.title")}</h1>
 
-  return (
-    <main>
-      <h2>{t("dashboard.finance")}</h2>
-      <p>Finance dashboard content here...</p>
-    </main>
-  );
-}
+  <BondPricingSimulator />
+
+  <div className="finance-row">
+    <BondPortfolioTable data={portfolio.bonds} />
+    <InsuranceProducts data={insurance.products} />
+  </div>
+
+</div>
