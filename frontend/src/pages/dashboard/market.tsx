@@ -1,6 +1,4 @@
-<div className="dashboard-page">
-
-  <h1>{t("market.title")}</h1>
+<Page title={t("market.title")}>
 
   <MarketControls
     demand={demand}
@@ -16,4 +14,4 @@
     <MarketDepthChart data={depth} />
   </div>
 
-</div>
+</Page>
