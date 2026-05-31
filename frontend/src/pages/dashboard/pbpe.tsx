@@ -1,6 +1,4 @@
-<div className="dashboard-page">
-
-  <h1>{t("pbpe.title")}</h1>
+<Page title={t("pbpe.title")}>
 
   <PBPEIssuanceTimeline data={data.timeline} />
 
@@ -9,4 +7,4 @@
     <PBPERegistryTable data={data.registry} />
   </div>
 
-</div>
+</Page>
