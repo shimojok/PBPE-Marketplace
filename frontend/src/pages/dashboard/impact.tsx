@@ -1,6 +1,4 @@
-<div className="dashboard-page">
-
-  <h1>{t("impact.title")}</h1>
+<Page title={t("impact.title")}>
 
   <div className="chart-row">
     <GHGStackedBar data={data.ghg_breakdown} />
@@ -13,4 +11,4 @@
     <ImprovementCard label="MBT55" value={data.mbt55_improvement} />
   </div>
 
-</div>
+</Page>
