@@ -1,12 +1,16 @@
-import { useT } from "../../../i18n/useT";
+<div className="dashboard-page">
 
-export default function Impact() {
-  const t = useT();
+  <h1>{t("impact.title")}</h1>
 
-  return (
-    <main>
-      <h2>{t("dashboard.impact")}</h2>
-      <p>Impact dashboard content here...</p>
-    </main>
-  );
-}
+  <div className="chart-row">
+    <GHGStackedBar data={data.ghg_breakdown} />
+    <SoilWaterHealthChart data={data.swh} />
+  </div>
+
+  <div className="improvement-row">
+    <ImprovementCard label="AGRIX" value={data.agrix_improvement} />
+    <ImprovementCard label="HealthBook" value={data.healthbook_improvement} />
+    <ImprovementCard label="MBT55" value={data.mbt55_improvement} />
+  </div>
+
+</div>
