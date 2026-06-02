@@ -1,14 +1,8 @@
-<Page title={t("impact.title")}>
-
-  <div className="chart-row">
-    <GHGStackedBar data={data.ghg_breakdown} />
-    <SoilWaterHealthChart data={data.swh} />
-  </div>
-
-  <div className="improvement-row">
-    <ImprovementCard label="AGRIX" value={data.agrix_improvement} />
-    <ImprovementCard label="HealthBook" value={data.healthbook_improvement} />
-    <ImprovementCard label="MBT55" value={data.mbt55_improvement} />
-  </div>
-
-</Page>
+export default function Impact() {
+  return (
+    <div style={{ padding: "40px" }}>
+      <h1>Impact Dashboard</h1>
+      <p>Impact analysis content goes here.</p>
+    </div>
+  )
+}
