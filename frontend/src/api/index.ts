@@ -1,16 +1,26 @@
 import axios from "axios";
 
+export const API_BASE =
+  process.env.NEXT_PUBLIC_API_BASE || "http://localhost:8000";
+
 const api = axios.create({
-  baseURL: "https://pbpe-backend-production.up.railway.app",
+  baseURL: API_BASE,
 });
 
-// ここで毎回 Token を自動で付与する
+// --- Token Interceptor (TypeScript Safe Version) ---
 api.interceptors.request.use((config) => {
-  const token = localStorage.getItem("token");
+  const token =
+    typeof window !== "undefined" ? localStorage.getItem("token") : null;
+
   if (token) {
-    config.headers = config.headers || {};
-    config.headers["token"] = token;
+    // Axios v1.6+ requires headers to be AxiosHeaders, not {}
+    if (!config.headers) {
+      config.headers = {} as any;
+    }
+
+    (config.headers as any)["token"] = token;
   }
+
   return config;
 });
 
