@@ -13,7 +13,6 @@ export default function Login() {
         password,
       });
 
-      // FastAPI OAuth2 の標準レスポンス
       const token = res.data.access_token;
 
       if (!token) {
@@ -23,7 +22,6 @@ export default function Login() {
 
       localStorage.setItem("token", token);
 
-      // Next.js では router.push でも良いが、SSR を避けるため window.location を使用
       window.location.href = "/dashboard/kpis";
     } catch (e) {
       setError("Invalid credentials");
