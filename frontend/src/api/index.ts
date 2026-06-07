@@ -7,19 +7,22 @@ const api = axios.create({
   baseURL: API_BASE,
 });
 
-// --- Token Interceptor (最終安定版 / 型を完全に無視して安全に動かす) ---
-api.interceptors.request.use((config: any) => {
+// --- Token Interceptor (Next.js + axios v1.6 Safe Version) ---
+api.interceptors.request.use((config) => {
   const token =
     typeof window !== "undefined" ? localStorage.getItem("token") : null;
-
   if (token) {
     if (!config.headers) {
-      config.headers = {};
+      config.headers = {} as any;
     }
-    config.headers["token"] = token;
+    (config.headers as any)["token"] = token;
   }
-
   return config;
 });
+
+export const login = async (email: string, password: string) => {
+  const response = await api.post("/auth/login", { email, password });
+  return response.data;
+};
 
 export default api;
