@@ -13,7 +13,7 @@ export const Sidebar = () => {
           <Link href="/dashboard">{t("dashboard")}</Link>
         </li>
         <li>
-          <Link href="/dashboard/global-kpis">{t("global_kpis")}</Link>
+          <Link href="/dashboard/kpis">{t("global_kpis")}</Link>
         </li>
         <li>
           <Link href="/dashboard/ghg">{t("ghg_emissions")}</Link>
