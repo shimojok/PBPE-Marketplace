@@ -1,122 +1,177 @@
-from fastapi import APIRouter
-from models.credits import (
-    KPIPayload,
-    CreditPriceResponse,
-    CreditPurchaseRequest,
-    CreditPurchaseResponse,
-    CreditSellRequest,
-    CreditSellResponse,
-    CreditPortfolio,
+"""
+PBPE Credits API Router
+(PBPE Marketplace – Credits Layer)
+
+This router handles:
+- PBPE Credit issuance
+- PBPE Credit retirement
+- PBPE Credit balance tracking
+- Automatic Registry + Blockchain recording
+- Double-counting prevention
+
+This is the backbone of PBPE Marketplace.
+"""
+
+from __future__ import annotations
+
+import time
+from typing import Dict, List
+
+from fastapi import APIRouter, HTTPException
+
+from utils.identifier import generate_pbpe_id, IdKind
+from blockchain.ledger import registry_ledger
+
+router = APIRouter(
+    prefix="/credits",
+    tags=["credits"],
 )
 
-router = APIRouter()
+# In-memory store (replace with DB later)
+CREDITS: Dict[str, Dict] = {}  # CRD-ID → { amount_issued, amount_retired, owner, kpi_id }
 
 
-def _impact_quality(kpi: KPIPayload) -> float:
-    # シンプルな重み付きスコア（必要に応じて調整）
-    return (
-        0.25 * (kpi.ghg_reduction_tco2e or 0)
-        + 0.15 * (kpi.delta_c_tc or 0)
-        + 0.15 * (kpi.disease_reduction_pct or 0)
-        + 0.15 * (kpi.food_loss_reduction_t or 0)
-        + 0.15 * (kpi.quality_score or 0)
-        + 0.15 * (kpi.stability_index or 0)
-    )
+# ---------------------------------------------------------
+# Utility
+# ---------------------------------------------------------
+
+def get_credit_or_404(crd_id: str) -> Dict:
+    if crd_id not in CREDITS:
+        raise HTTPException(status_code=404, detail="Credit not found")
+    return CREDITS[crd_id]
 
 
-def _base_prices() -> CreditPriceResponse:
-    # デフォルト価格（USD）
-    return CreditPriceResponse(
-        Biosecurity=14.0,
-        Carbon=10.0,
-        FoodLoss=9.0,
-        Quality=8.0,
-        Stability=7.0,
-    )
+# ---------------------------------------------------------
+# Issue PBPE Credit
+# ---------------------------------------------------------
 
-
-@router.get("/price", response_model=CreditPriceResponse)
-def get_credit_prices(
-    demand_index: float = 0.5,
-    liquidity_index: float = 0.5,
-    volatility_index: float = 0.3,
+@router.post("/issue", response_model=dict)
+def issue_credit(
+    kpi_id: str,
+    amount_pbpe: float,
+    owner: str,
 ):
-    base = _base_prices()
-    adj = 1.0 + 0.3 * demand_index + 0.2 * liquidity_index - 0.2 * volatility_index
+    """
+    Issue PBPE Credits from a KPI result.
 
-    return CreditPriceResponse(
-        Biosecurity=base.Biosecurity * adj,
-        Carbon=base.Carbon * adj,
-        FoodLoss=base.FoodLoss * adj,
-        Quality=base.Quality * adj,
-        Stability=base.Stability * adj,
+    Double-counting prevention:
+    - A KPI-ID can only be used once to issue PBPE Credits.
+    """
+
+    # Check if KPI-ID already used
+    for crd in CREDITS.values():
+        if crd["kpi_id"] == kpi_id:
+            raise HTTPException(
+                status_code=400,
+                detail="PBPE Credits already issued for this KPI-ID (double issuance prevented)",
+            )
+
+    # Generate CRD-ID
+    crd_id = generate_pbpe_id(IdKind.CRD)
+
+    # Store credit
+    CREDITS[crd_id] = {
+        "kpi_id": kpi_id,
+        "amount_issued": amount_pbpe,
+        "amount_retired": 0.0,
+        "owner": owner,
+        "created_at": time.time(),
+    }
+
+    # Record in Registry + Blockchain
+    entry = registry_ledger.create_and_record(
+        kind="credit_issuance",
+        subject_id=crd_id,
+        actor=owner,
+        amount=amount_pbpe,
+        unit="PBPE",
+        timestamp=time.time(),
     )
 
+    return {
+        "crd_id": crd_id,
+        "kpi_id": kpi_id,
+        "amount_issued": amount_pbpe,
+        "owner": owner,
+        "registry_entry": entry.id,
+        "chain_hash": entry.chain_hash,
+    }
 
-@router.post("/buy", response_model=CreditPurchaseResponse)
-def buy_credits(req: CreditPurchaseRequest):
-    prices = _base_prices()
-    impact_q = _impact_quality(req.kpi)
 
-    # Price = θ1 * ImpactQuality + θ2 * Demand + θ3 * Liquidity + θ4 * VerificationLevel
-    # ここでは ImpactQuality のみを簡易反映（スケールを圧縮）
-    factor = 1.0 + min(impact_q / 1_000_000.0, 0.5)
+# ---------------------------------------------------------
+# Retire PBPE Credit
+# ---------------------------------------------------------
 
-    issued = {}
-    total_cost = 0.0
+@router.post("/retire", response_model=dict)
+def retire_credit(
+    crd_id: str,
+    amount: float,
+    actor: str,
+):
+    """
+    Retire PBPE Credits.
 
-    for ctype in req.credit_types:
-        if ctype.lower() == "carbon":
-            price = prices.Carbon * factor
-        elif ctype.lower() == "biosecurity":
-            price = prices.Biosecurity * factor
-        elif ctype.lower() == "food_loss":
-            price = prices.FoodLoss * factor
-        elif ctype.lower() == "quality":
-            price = prices.Quality * factor
-        elif ctype.lower() == "stability":
-            price = prices.Stability * factor
-        else:
-            continue
+    Double-counting prevention:
+    - Cannot retire more than issued - already retired.
+    """
 
-        amount = impact_q / 1000.0  # 仮の発行量ロジック
-        issued[ctype] = amount
-        total_cost += amount * price
+    credit = get_credit_or_404(crd_id)
 
-    return CreditPurchaseResponse(
-        credits_issued=issued,
-        total_cost_usd=total_cost,
+    available = credit["amount_issued"] - credit["amount_retired"]
+    if amount > available:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Cannot retire {amount}. Only {available} PBPE available (double retirement prevented).",
+        )
+
+    # Update retirement
+    credit["amount_retired"] += amount
+
+    # Record in Registry + Blockchain
+    entry = registry_ledger.create_and_record(
+        kind="credit_retirement",
+        subject_id=crd_id,
+        actor=actor,
+        amount=amount,
+        unit="PBPE",
+        timestamp=time.time(),
     )
 
-
-@router.post("/sell", response_model=CreditSellResponse)
-def sell_credits(req: CreditSellRequest):
-    prices = _base_prices()
-    if req.type.lower() == "carbon":
-        price = prices.Carbon
-    elif req.type.lower() == "biosecurity":
-        price = prices.Biosecurity
-    elif req.type.lower() == "food_loss":
-        price = prices.FoodLoss
-    elif req.type.lower() == "quality":
-        price = prices.Quality
-    elif req.type.lower() == "stability":
-        price = prices.Stability
-    else:
-        price = 0.0
-
-    total_return = req.amount_pbpe * price
-    return CreditSellResponse(
-        transaction_id="TX-CRED-0001",
-        total_return_usd=total_return,
-    )
+    return {
+        "crd_id": crd_id,
+        "retired": amount,
+        "retired_total": credit["amount_retired"],
+        "registry_entry": entry.id,
+        "chain_hash": entry.chain_hash,
+    }
 
 
-@router.get("/portfolio", response_model=CreditPortfolio)
-def get_credit_portfolio():
-    return CreditPortfolio(
-        credits=[
-            {"type": "carbon", "amount_pbpe": 100000.0, "value_usd": 1_000_000.0},
-            {"type": "biosecurity", "amount_pbpe": 50000.0, "value_usd": 700_000.0},
-        ]
-    )
+# ---------------------------------------------------------
+# Get Credit Info
+# ---------------------------------------------------------
+
+@router.get("/{crd_id}", response_model=dict)
+def get_credit(crd_id: str):
+    """
+    Get PBPE Credit details.
+    """
+    credit = get_credit_or_404(crd_id)
+    return {
+        "crd_id": crd_id,
+        **credit,
+    }
+
+
+# ---------------------------------------------------------
+# List All Credits
+# ---------------------------------------------------------
+
+@router.get("/", response_model=List[dict])
+def list_credits():
+    """
+    List all PBPE Credits.
+    """
+    return [
+        {"crd_id": crd_id, **data}
+        for crd_id, data in CREDITS.items()
+    ]
