@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from models.impact import Scope3Response
+from backend.models.impact import Scope3Response
 
 router = APIRouter()
 
