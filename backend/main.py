@@ -14,3 +14,4 @@ app.include_router(products.router, prefix="/products", tags=["products"])
 app.include_router(dashboard.router, prefix="/dashboard", tags=["dashboard"])
 app.include_router(bonds.router, prefix="/finance", tags=["bonds"])
 app.include_router(insurance.router, prefix="/finance", tags=["insurance"])
+
