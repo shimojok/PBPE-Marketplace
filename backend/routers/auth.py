@@ -1,6 +1,7 @@
 from fastapi import APIRouter, HTTPException
-from models.user import User
-from utils.jwt import create_token
+from backend.models.user import User
+from backend.utils.jwt import create_token
+
 
 router = APIRouter()
 
