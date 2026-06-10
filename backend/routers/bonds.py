@@ -5,6 +5,7 @@ from backend.models.bonds import (
     BondPriceResponse,
     BondPortfolioItem,
     BondPortfolioResponse,
+    BondPriceRequest,   # ← これが抜けている
 )
 
 router = APIRouter()
