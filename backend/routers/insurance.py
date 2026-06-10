@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from models.insurance import (
+from backend.models.insurance import (
     InsuranceProduct,
     InsuranceProductList,
     InsuranceQuoteRequest,
