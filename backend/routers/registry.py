@@ -14,14 +14,15 @@ from typing import Optional, List
 
 from fastapi import APIRouter, HTTPException, Query
 
-from blockchain.chain import blockchain
-from blockchain.ledger import registry_ledger, RegistryEntry
+from backend.blockchain.chain import blockchain
+from backend.blockchain.ledger import registry_ledger, RegistryEntry
 
 router = APIRouter(
     prefix="/registry",
     tags=["registry"],
 )
 
+# 以下はそのまま（省略）
 
 @router.post("/record", response_model=dict)
 def record_registry_entry(
