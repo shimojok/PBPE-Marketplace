@@ -19,7 +19,7 @@ from typing import Dict, List
 
 from fastapi import APIRouter, HTTPException
 
-from utils.identifier import generate_pbpe_id, IdKind
+from backend.utils.identifier import generate_pbpe_id, IdKind
 from blockchain.ledger import registry_ledger
 
 router = APIRouter(
