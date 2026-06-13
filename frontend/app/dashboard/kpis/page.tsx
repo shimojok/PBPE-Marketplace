@@ -1,122 +1,81 @@
-export default function KPIs() {
+// frontend/app/dashboard/kpis/page.tsx
+async function fetchSummary() {
+  const res = await fetch('http://localhost:8000/dashboard/summary');
+  return res.json();
+}
+
+async function fetchGHG() {
+  const res = await fetch('http://localhost:8000/dashboard/ghg-breakdown');
+  return res.json();
+}
+
+async function fetchCredits() {
+  const res = await fetch('http://localhost:8000/dashboard/credits/market');
+  return res.json();
+}
+
+async function fetchEnterprise() {
+  const res = await fetch('http://localhost:8000/dashboard/enterprise/usage');
+  return res.json();
+}
+
+async function fetchFlywheel() {
+  const res = await fetch('http://localhost:8000/dashboard/flywheel');
+  return res.json();
+}
+
+export default async function KPIsPage() {
+  const [summary, ghg, credits, enterprise, flywheel] = await Promise.all([
+    fetchSummary(),
+    fetchGHG(),
+    fetchCredits(),
+    fetchEnterprise(),
+    fetchFlywheel()
+  ]);
+
   return (
     <>
-      <div className="main-header">
-        <div className="main-title-block">
-          <div className="main-title">Global KPIs</div>
-          <div className="main-subtitle">
-            Planetary balance sheet — GHG, Soil, Water, Health, Stability, PBPE
-          </div>
+      {/* KPI Cards - 6枚 */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+        <div className="card">
+          <div className="card-title">GHG Reduction</div>
+          <div className="card-value">{summary.ghg_reduction_tco2e_per_year.toLocaleString()} tCO₂e/yr</div>
+          <div className="card-sub">Units: {summary.units.toLocaleString()}</div>
         </div>
-        <div className="main-badge">/dashboard/kpis</div>
+        {/* 残り5枚も同様 */}
       </div>
 
-      <div className="grid grid-3">
+      {/* 中段: 2列 */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+        {/* 左: GHG Breakdown Stacked Bar */}
         <div className="card">
-          <div className="card-header">
-            <div>
-              <div className="card-title">GHG Balance</div>
-              <div className="card-metric">-18.4 MtCO₂e</div>
-            </div>
-            <span className="card-tag card-tag-positive">Net negative</span>
-          </div>
-          <div className="card-footer">vs. baseline 2030 scenario</div>
+          <div className="card-title">GHG Reduction by Source</div>
+          {/* スタックバー実装 */}
         </div>
 
+        {/* 右: PBPE Value Flywheel */}
         <div className="card">
-          <div className="card-header">
-            <div>
-              <div className="card-title">Soil Carbon</div>
-              <div className="card-metric">+3.2 tC/ha</div>
-            </div>
-            <span className="card-tag card-tag-positive">Regenerative</span>
-          </div>
-          <div className="card-footer">AGRIX-backed soil carbon uplift</div>
-        </div>
-
-        <div className="card">
-          <div className="card-header">
-            <div>
-              <div className="card-title">Water & Health</div>
-              <div className="card-metric">+24.5 index</div>
-            </div>
-            <span className="card-tag card-tag-positive">Improving</span>
-          </div>
-          <div className="card-footer">Water security & HealthBook composite</div>
+          <div className="card-title">PBPE Value Flywheel</div>
+          {/* フライホイール図 */}
         </div>
       </div>
 
-      <div className="grid grid-2">
+      {/* 下段: 2列 */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* 左: Credits Table */}
         <div className="card">
-          <div className="card-header">
-            <div>
-              <div className="card-title">PBPE Issuance</div>
-              <div className="card-metric">128.4 M PBPE</div>
-            </div>
-            <span className="card-tag">Credits & Bonds</span>
-          </div>
-          <div style={{ display: 'flex', gap: 16, alignItems: 'center', marginTop: 8 }}>
-            <div className="donut">
-              <div className="donut-inner">
-                <div>
-                  <div style={{ fontSize: 11, color: '#9ca3af' }}>Composition</div>
-                  <div style={{ fontSize: 14, fontWeight: 600 }}>PBPE</div>
-                </div>
-              </div>
-            </div>
-            <div style={{ fontSize: 12, flex: 1 }}>
-              <div className="bar-row">
-                <span className="bar-label">Carbon</span>
-                <div className="bar-track">
-                  <div className="bar-fill" style={{ width: '40%' }} />
-                </div>
-                <span className="bar-value">40%</span>
-              </div>
-              <div className="bar-row">
-                <span className="bar-label">Soil</span>
-                <div className="bar-track">
-                  <div className="bar-fill" style={{ width: '25%' }} />
-                </div>
-                <span className="bar-value">25%</span>
-              </div>
-              <div className="bar-row">
-                <span className="bar-label">Water</span>
-                <div className="bar-track">
-                  <div className="bar-fill" style={{ width: '20%', background: 'linear-gradient(90deg,#0ea5e9,#22c55e)' }} />
-                </div>
-                <span className="bar-value">20%</span>
-              </div>
-              <div className="bar-row">
-                <span className="bar-label">Health</span>
-                <div className="bar-track">
-                  <div className="bar-fill" style={{ width: '15%', background: 'linear-gradient(90deg,#f97316,#22c55e)' }} />
-                </div>
-                <span className="bar-value">15%</span>
-              </div>
-            </div>
-          </div>
-          <div className="card-footer">PBPE registry composition (illustrative)</div>
+          <div className="card-title">PBPE Credits Market</div>
+          <table className="w-full">{/* テーブル実装 */}</table>
         </div>
 
+        {/* 右: Enterprise Usage */}
         <div className="card">
-          <div className="card-header">
-            <div>
-              <div className="card-title">Global Flywheel</div>
-              <div className="card-metric">Impact → PBPE → Capital</div>
-            </div>
-            <span className="card-tag">System view</span>
-          </div>
-          <div style={{ fontSize: 12, marginTop: 8, lineHeight: 1.6 }}>
-            <ul style={{ paddingLeft: 18, margin: 0 }}>
-              <li>AGRIX: Soil & yield → PBPE Credits</li>
-              <li>HealthBook: Health outcomes → PBPE Health component</li>
-              <li>MBT55: Stability & resilience → PBPE Stability</li>
-              <li>PBPE Credits & Bonds: Capital allocation back to projects</li>
-            </ul>
-          </div>
-          <div className="card-footer">Closed-loop between impact data and capital markets</div>
+          <div className="card-title">Enterprise Usage</div>
+          <div>Companies: {enterprise.companies_onboarded}</div>
+          <div>Countries: {enterprise.countries}</div>
+          <div>Scope3 Reports: {enterprise.scope3_reports_linked}</div>
         </div>
       </div>
     </>
-  )
+  );
 }
