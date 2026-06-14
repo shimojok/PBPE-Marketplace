@@ -1,56 +1,51 @@
-body {
+/* frontend/app/globals.css */
+* {
   margin: 0;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-.dashboard {
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: #f3f4f6;
+  color: #1f2937;
+}
+
+/* カード共通スタイル */
+.card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
   padding: 16px;
-  display: flex;
 }
 
-.sidebar {
-  width: 220px;
-  padding: 16px;
-  border-right: 1px solid #ddd;
+/* グリッド */
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
 }
 
-.kpi-row {
-  display: flex;
-  gap: 12px;
-  margin-bottom: 16px;
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
 }
 
-.kpi-card {
-  background: #f7f7f7;
-  padding: 12px 16px;
-  border-radius: 8px;
-  min-width: 180px;
+/* レスポンシブ */
+@media (max-width: 768px) {
+  .grid-2, .grid-3 {
+    grid-template-columns: 1fr;
+  }
 }
 
-.kpi-label {
-  font-size: 12px;
-  color: #666;
+/* メトリクス表示 */
+.metric-value {
+  font-size: 28px;
+  font-weight: bold;
 }
 
-.kpi-value {
-  font-size: 18px;
-  font-weight: 600;
-}
-
-.kpi-subtext {
-  font-size: 11px;
-  color: #999;
-}
-
-table {
-  border-collapse: collapse;
-  width: 100%;
-  margin-top: 8px;
-}
-
-th,
-td {
-  border: 1px solid #ddd;
-  padding: 6px 8px;
-  font-size: 13px;
+.metric-label {
+  font-size: 14px;
+  color: #6b7280;
 }
