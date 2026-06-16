@@ -1,5 +1,5 @@
 // frontend/app/dashboard/pbpe/page.tsx
-// API呼び出し版
+// PBPE Issuance - English Version
 
 async function fetchPBPE() {
   const res = await fetch('http://localhost:8000/dashboard/pbpe');
@@ -30,13 +30,23 @@ export default async function PbpePage() {
     { name: "Health", amount: data.components.health_pbpe, color: "#ef4444" }
   ];
 
-  return (
-    <div style={{ padding: "24px" }}>
-      <h1 style={{ fontSize: "24px", fontWeight: "bold", marginBottom: "8px" }}>PBPE Issuance</h1>
-      <p style={{ color: "#6b7280", marginBottom: "24px" }}>Annual issuance — Carbon / Soil / Water / Health components</p>
+  const total = data.total_pbpe_per_year;
 
-      <div style={{ background: "white", padding: "16px", borderRadius: "12px", boxShadow: "0 1px 3px rgba(0,0,0,0.1)" }}>
-        <h3 style={{ fontSize: "16px", fontWeight: "bold", marginBottom: "16px" }}>PBPE構成要素</h3>
+  return (
+    <div style={{ padding: "0" }}>
+      {/* Header */}
+      <h1 style={{ fontSize: "24px", fontWeight: "bold", marginBottom: "8px" }}>
+        PBPE Issuance
+      </h1>
+      <p style={{ color: "#6b7280", marginBottom: "24px" }}>
+        Annual issuance — Carbon / Soil / Water / Health components
+      </p>
+
+      {/* Components Section */}
+      <div className="card">
+        <h3 style={{ fontSize: "16px", fontWeight: "bold", marginBottom: "16px" }}>
+          PBPE Components
+        </h3>
         {components.map((comp, i) => (
           <div key={i} style={{ marginBottom: "12px" }}>
             <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "4px" }}>
@@ -44,14 +54,45 @@ export default async function PbpePage() {
               <span>{(comp.amount / 1e6).toFixed(0)}M PBPE</span>
             </div>
             <div style={{ background: "#e5e7eb", borderRadius: "8px", height: "24px", overflow: "hidden" }}>
-              <div style={{ width: `${(comp.amount / data.total_pbpe_per_year) * 100}%`, background: comp.color, height: "100%", display: "flex", alignItems: "center", justifyContent: "flex-end", paddingRight: "8px", color: "white", fontSize: "11px" }}>
-                {((comp.amount / data.total_pbpe_per_year) * 100).toFixed(0)}%
+              <div style={{
+                width: `${(comp.amount / total) * 100}%`,
+                background: comp.color,
+                height: "100%",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "flex-end",
+                paddingRight: "8px",
+                color: "white",
+                fontSize: "11px",
+              }}>
+                {((comp.amount / total) * 100).toFixed(0)}%
               </div>
             </div>
           </div>
         ))}
         <div style={{ marginTop: "16px", padding: "12px", background: "#f3f4f6", borderRadius: "8px", textAlign: "center" }}>
-          総発行量: <strong>{(data.total_pbpe_per_year / 1e6).toFixed(0)}M PBPE</strong> / 年
+          Total Issued: <strong>{(total / 1e6).toFixed(0)}M PBPE</strong> / year
+        </div>
+      </div>
+
+      {/* Registry Section */}
+      <div className="card" style={{ marginTop: "24px" }}>
+        <h3 style={{ fontSize: "16px", fontWeight: "bold", marginBottom: "16px" }}>
+          PBPE Registry
+        </h3>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "16px" }}>
+          <div style={{ textAlign: "center", padding: "12px", background: "#f3f4f6", borderRadius: "8px" }}>
+            <div style={{ fontSize: "28px", fontWeight: "bold" }}>1,248</div>
+            <div style={{ fontSize: "11px", color: "#6b7280" }}>Registry Entries</div>
+          </div>
+          <div style={{ textAlign: "center", padding: "12px", background: "#f3f4f6", borderRadius: "8px" }}>
+            <div style={{ fontSize: "28px", fontWeight: "bold" }}>1,248</div>
+            <div style={{ fontSize: "11px", color: "#6b7280" }}>7-digit Codes</div>
+          </div>
+          <div style={{ textAlign: "center", padding: "12px", background: "#f3f4f6", borderRadius: "8px" }}>
+            <div style={{ fontSize: "28px", fontWeight: "bold", color: "#22c55e" }}>Active</div>
+            <div style={{ fontSize: "11px", color: "#6b7280" }}>Blockchain</div>
+          </div>
         </div>
       </div>
     </div>
