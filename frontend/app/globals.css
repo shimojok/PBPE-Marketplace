@@ -1,4 +1,18 @@
-/* frontend/app/globals.css */
+/* frontend/app/globals.css - Dark Theme */
+:root {
+  --bg-primary: #0f172a;
+  --bg-secondary: #1e293b;
+  --bg-sidebar: #020617;
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --border: #334155;
+  --accent-green: #22c55e;
+  --accent-blue: #3b82f6;
+  --accent-orange: #f59e0b;
+  --accent-red: #ef4444;
+  --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -7,19 +21,20 @@
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background-color: #f3f4f6;
-  color: #1f2937;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
 }
 
-/* カード共通スタイル */
+/* Card Styles */
 .card {
-  background: white;
+  background: var(--bg-secondary);
   border-radius: 12px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  box-shadow: var(--card-shadow);
   padding: 16px;
+  border: 1px solid var(--border);
 }
 
-/* グリッド */
+/* Grid Layouts */
 .grid-2 {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -32,14 +47,13 @@ body {
   gap: 24px;
 }
 
-/* レスポンシブ */
 @media (max-width: 768px) {
   .grid-2, .grid-3 {
     grid-template-columns: 1fr;
   }
 }
 
-/* メトリクス表示 */
+/* Metric Display */
 .metric-value {
   font-size: 28px;
   font-weight: bold;
@@ -47,5 +61,52 @@ body {
 
 .metric-label {
   font-size: 14px;
-  color: #6b7280;
+  color: var(--text-secondary);
+}
+
+/* Comparison Card (OFF vs ON) */
+.comparison-container {
+  display: flex;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.comparison-off {
+  flex: 1;
+  background: #1e1b2e;
+  border-radius: 8px;
+  padding: 12px;
+  border-left: 3px solid #64748b;
+}
+
+.comparison-on {
+  flex: 1;
+  background: #1a2e1a;
+  border-radius: 8px;
+  padding: 12px;
+  border-left: 3px solid var(--accent-green);
+}
+
+.comparison-label {
+  font-size: 11px;
+  color: var(--text-secondary);
+  margin-bottom: 4px;
+}
+
+.comparison-value {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.comparison-diff {
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+.diff-positive {
+  color: var(--accent-green);
+}
+
+.diff-negative {
+  color: var(--accent-red);
 }
