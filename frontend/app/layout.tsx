@@ -2,15 +2,36 @@
 'use client'
 
 import './globals.css'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
-  const [hoveredItem, setHoveredItem] = useState<string | null>(null)
-  const [mbtEnabled, setMbtEnabled] = useState(true)  // MBT55 ON/OFF状態
+  // URLパラメータから初期状態を読み取る
+  const [mbtEnabled, setMbtEnabled] = useState(true)
+
+  useEffect(() => {
+    // クライアントサイドでのみ実行
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search)
+      const mbtParam = params.get('mbt')
+      if (mbtParam === 'on') setMbtEnabled(true)
+      else if (mbtParam === 'off') setMbtEnabled(false)
+    }
+  }, [])
+
+  const toggleMBT = () => {
+    const newState = !mbtEnabled
+    setMbtEnabled(newState)
+    // URLを更新
+    if (typeof window !== 'undefined') {
+      const url = new URL(window.location.href)
+      url.searchParams.set('mbt', newState ? 'on' : 'off')
+      window.history.pushState({}, '', url.toString())
+    }
+  }
 
   const navItems = [
     { href: '/dashboard/kpis', label: 'Global KPIs' },
@@ -21,27 +42,30 @@ export default function RootLayout({
     { href: '/dashboard/pbpe', label: 'PBPE Issuance' },
   ]
 
-  const toggleMBT = () => {
-    setMbtEnabled(!mbtEnabled)
-    // TODO: 状態をグローバルまたはLocalStorageに保存
-  }
-
   return (
     <html lang="en" className="dark">
-      <body>
+      <body style={{
+        backgroundColor: '#0f172a',
+        color: '#f1f5f9',
+        margin: 0,
+        padding: 0,
+        fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+        minHeight: '100vh',
+      }}>
         <div style={{ display: 'flex', minHeight: '100vh' }}>
-          {/* Sidebar */}
+          {/* サイドバー */}
           <aside style={{
             width: '260px',
-            background: 'var(--bg-sidebar)',
-            borderRight: '1px solid var(--border)',
+            backgroundColor: '#020617',
+            borderRight: '1px solid #334155',
             padding: '24px 16px',
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'space-between',
+            flexShrink: 0,
           }}>
             <div>
-              <div style={{ fontSize: '20px', fontWeight: 'bold', marginBottom: '32px' }}>
+              <div style={{ fontSize: '20px', fontWeight: 'bold', marginBottom: '32px', color: '#f1f5f9' }}>
                 🌍 PBPE Marketplace
               </div>
               <nav>
@@ -54,13 +78,19 @@ export default function RootLayout({
                       padding: '10px 12px',
                       marginBottom: '4px',
                       borderRadius: '8px',
-                      color: hoveredItem === item.href ? 'var(--text-primary)' : 'var(--text-secondary)',
+                      color: '#94a3b8',
                       textDecoration: 'none',
                       fontSize: '14px',
-                      backgroundColor: hoveredItem === item.href ? 'var(--bg-secondary)' : 'transparent',
+                      transition: 'all 0.2s',
                     }}
-                    onMouseEnter={() => setHoveredItem(item.href)}
-                    onMouseLeave={() => setHoveredItem(null)}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.backgroundColor = '#1e293b'
+                      e.currentTarget.style.color = '#f1f5f9'
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.backgroundColor = 'transparent'
+                      e.currentTarget.style.color = '#94a3b8'
+                    }}
                   >
                     {item.label}
                   </a>
@@ -68,15 +98,14 @@ export default function RootLayout({
               </nav>
             </div>
 
-            {/* MBT55 Toggle Control */}
+            {/* MBT55 Toggle */}
             <div style={{
               padding: '16px',
-              background: 'var(--bg-secondary)',
+              backgroundColor: '#1e293b',
               borderRadius: '12px',
-              marginTop: '32px',
-              border: '1px solid var(--border)',
+              border: '1px solid #334155',
             }}>
-              <div style={{ fontSize: '12px', color: 'var(--text-secondary)', marginBottom: '12px' }}>
+              <div style={{ fontSize: '12px', color: '#94a3b8', marginBottom: '12px' }}>
                 MBT55 Microbial System
               </div>
               <button
@@ -88,23 +117,21 @@ export default function RootLayout({
                   border: 'none',
                   fontWeight: 'bold',
                   cursor: 'pointer',
-                  background: mbtEnabled ? 'var(--accent-green)' : '#475569',
+                  backgroundColor: mbtEnabled ? '#22c55e' : '#475569',
                   color: 'white',
                   transition: 'all 0.2s',
                 }}
               >
                 {mbtEnabled ? '🟢 ON' : '⚫ OFF'}
               </button>
-              <div style={{ fontSize: '10px', color: 'var(--text-secondary)', marginTop: '8px', textAlign: 'center' }}>
-                {mbtEnabled 
-                  ? 'Climate-positive mode active' 
-                  : 'Conventional farming baseline'}
+              <div style={{ fontSize: '10px', color: '#94a3b8', marginTop: '8px', textAlign: 'center' }}>
+                {mbtEnabled ? 'Climate-positive mode active' : 'Conventional farming baseline'}
               </div>
             </div>
           </aside>
 
-          {/* Main Content */}
-          <main style={{ flex: 1, padding: '24px', overflow: 'auto' }}>
+          {/* メインコンテンツ */}
+          <main style={{ flex: 1, padding: '24px', overflow: 'auto', backgroundColor: '#0f172a' }}>
             {children}
           </main>
         </div>

@@ -1,0 +1,7 @@
+{
+  "/dashboard/kpis/page": "app/dashboard/kpis/page.js",
+  "/dashboard/market/page": "app/dashboard/market/page.js",
+  "/dashboard/finance/page": "app/dashboard/finance/page.js",
+  "/dashboard/pbpe/page": "app/dashboard/pbpe/page.js",
+  "/dashboard/impact/page": "app/dashboard/impact/page.js"
+}
