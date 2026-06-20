@@ -16,8 +16,19 @@ export function Tbody({ children }: { children: React.ReactNode }) {
   return <tbody>{children}</tbody>;
 }
 
-export function Tr({ children }: { children: React.ReactNode }) {
-  return <tr className="border-b transition-colors hover:bg-muted/50">{children}</tr>;
+export function Tr({ children, className = "", onClick }: { 
+  children: React.ReactNode; 
+  className?: string; 
+  onClick?: () => void;
+}) {
+  return (
+    <tr 
+      className={`border-b transition-colors hover:bg-muted/50 ${className}`}
+      onClick={onClick}
+    >
+      {children}
+    </tr>
+  );
 }
 
 export function Th({ children, className = "" }: { children: React.ReactNode; className?: string }) {
