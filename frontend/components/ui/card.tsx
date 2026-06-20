@@ -14,6 +14,10 @@ export function CardHeader({ children }: { children: React.ReactNode }) {
   return <div className="mb-2 font-semibold text-lg">{children}</div>;
 }
 
+export function CardTitle({ children }: { children: React.ReactNode }) {
+  return <h3 className="text-lg font-bold">{children}</h3>;
+}
+
 export function CardContent({ children }: { children: React.ReactNode }) {
   return <div className="text-sm text-gray-700">{children}</div>;
 }
