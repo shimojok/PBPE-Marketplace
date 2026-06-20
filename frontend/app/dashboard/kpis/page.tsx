@@ -16,7 +16,7 @@ export default function KPIsPage() {
     if (mbtParam === 'on') setMbtEnabled(true)
     else if (mbtParam === 'off') setMbtEnabled(false)
 
-    fetch('http://localhost:8000/dashboard/summary')
+    fetch('https://pbpe-marketplace-production.up.railway.app/dashboard/summary')
       .then(res => res.json())
       .then(data => {
         setSummary(data)
