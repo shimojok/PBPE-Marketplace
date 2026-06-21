@@ -9,8 +9,7 @@ Exposes endpoints to:
 
 from typing import Optional, List
 from fastapi import APIRouter, HTTPException, Query
-
-from backend.engines.registry_engine import registry_engine
+from engines.registry_engine import registry_engine
 
 router = APIRouter(prefix="/registry", tags=["registry"])
 

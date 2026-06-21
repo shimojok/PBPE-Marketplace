@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends
-from backend.core.auth_middleware import require_auth
+from core.auth_middleware import require_auth
 
 router = APIRouter(prefix="/scope3")
 

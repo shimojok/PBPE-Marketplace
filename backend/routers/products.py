@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from backend.models.products import Product, ProductListResponse
+from models.products import Product, ProductListResponse
 
 router = APIRouter()
 

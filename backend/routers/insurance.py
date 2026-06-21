@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from backend.models.insurance import (
+from models.insurance import (
     InsuranceProduct,
     InsuranceProductList,
     InsuranceQuoteRequest,
@@ -9,7 +9,6 @@ from backend.models.insurance import (
 )
 
 router = APIRouter()
-
 
 @router.get("/insurance/products", response_model=InsuranceProductList)
 def list_insurance_products():

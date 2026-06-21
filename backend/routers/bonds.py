@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from backend.models.bonds import (
+from models.bonds import (
     Bond,
     BondListResponse,
     BondPriceResponse,

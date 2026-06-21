@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from backend.models.users import UserRegisterRequest, AuthRequest, AuthResponse
+from models.users import UserRegisterRequest, AuthRequest, AuthResponse
 
 router = APIRouter()
 
