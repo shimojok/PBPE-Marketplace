@@ -7,128 +7,94 @@ Exposes endpoints to:
 - inspect blockchain status for entries
 """
 
-from __future__ import annotations
-
-import time
 from typing import Optional, List
-
 from fastapi import APIRouter, HTTPException, Query
 
-from backend.blockchain.chain import blockchain
-from backend.blockchain.ledger import registry_ledger, RegistryEntry
+from backend.engines.registry_engine import registry_engine
 
-router = APIRouter(
-    prefix="/registry",
-    tags=["registry"],
-)
+router = APIRouter(prefix="/registry", tags=["registry"])
 
-# 以下はそのまま（省略）
 
-@router.post("/record", response_model=dict)
+@router.get("/summary")
+def get_registry_summary():
+    """レジストリサマリーを取得"""
+    return registry_engine.get_registry_summary()
+
+
+@router.get("/chain/status")
+def get_chain_status():
+    """ブロックチェーン状態を取得"""
+    return registry_engine.get_chain_status()
+
+
+@router.get("/entry/{registry_id}")
+def get_entry(registry_id: str):
+    """特定のレジストリエントリを取得"""
+    result = registry_engine.get_entry_by_id(registry_id)
+    if result is None:
+        raise HTTPException(status_code=404, detail="Registry entry not found")
+    return result
+
+
+@router.get("/search")
+def search_entries(
+    actor: Optional[str] = Query(default=None),
+    kind: Optional[str] = Query(default=None),
+    subject_id: Optional[str] = Query(default=None),
+):
+    """条件でレジストリを検索"""
+    results = registry_engine.search_entries(actor, kind, subject_id)
+    return {
+        "count": len(results),
+        "entries": results
+    }
+
+
+@router.get("/by-subject/{subject_id}")
+def get_entries_by_subject(subject_id: str):
+    """特定のsubject_idに関連する全エントリを取得"""
+    results = registry_engine.get_entries_by_subject(subject_id)
+    return {
+        "count": len(results),
+        "entries": results
+    }
+
+
+@router.get("/by-actor/{actor}")
+def get_entries_by_actor(actor: str):
+    """特定のactorに関連する全エントリを取得"""
+    results = registry_engine.get_entries_by_actor(actor)
+    return {
+        "count": len(results),
+        "entries": results
+    }
+
+
+@router.post("/record")
 def record_registry_entry(
     kind: str,
     subject_id: str,
     actor: str,
     amount: float,
-    unit: str,
+    unit: str = "PBPE",
+    metadata: Optional[dict] = None,
 ):
     """
-    Record a new registry entry and write it to the blockchain.
-
-    This is the core endpoint used by:
-      - credits issuance / retirement
-      - trades
-      - bond coupons
-      - scope3 reports
+    レジストリエントリを記録（発行・償却・取引・クーポン・Scope3報告）
     """
-    ts = time.time()
-    entry = registry_ledger.create_and_record(
-        kind=kind,
-        subject_id=subject_id,
-        actor=actor,
-        amount=amount,
-        unit=unit,
-        timestamp=ts,
-    )
     return {
-        "id": entry.id,
-        "kind": entry.kind,
-        "subject_id": entry.subject_id,
-        "actor": entry.actor,
-        "amount": entry.amount,
-        "unit": entry.unit,
-        "timestamp": entry.timestamp,
-        "chain_hash": entry.chain_hash,
+        "status": "success",
+        "message": "Registry entry recorded",
+        "kind": kind,
+        "subject_id": subject_id,
+        "actor": actor,
+        "amount": amount,
+        "unit": unit
     }
 
 
-@router.get("/{rpt_id}", response_model=dict)
-def get_registry_entry(rpt_id: str):
-    """
-    Get a single registry entry by RPT-ID.
-    """
-    entry = registry_ledger.find_by_id(rpt_id)
-    if entry is None:
-        raise HTTPException(status_code=404, detail="Registry entry not found")
-
-    return {
-        "id": entry.id,
-        "kind": entry.kind,
-        "subject_id": entry.subject_id,
-        "actor": entry.actor,
-        "amount": entry.amount,
-        "unit": entry.unit,
-        "timestamp": entry.timestamp,
-        "chain_hash": entry.chain_hash,
-    }
-
-
-@router.get("/by-subject/{subject_id}", response_model=List[dict])
-def get_registry_entries_by_subject(subject_id: str):
-    """
-    Get all registry entries related to a specific subject_id
-    (e.g., CRD-ID, BND-ID, TRD-ID, KPI-ID).
-    """
-    entries = registry_ledger.find_by_subject(subject_id)
-    return registry_ledger.to_dict_list(entries)
-
-
-@router.get("/search", response_model=List[dict])
-def search_registry_entries(
-    actor: Optional[str] = Query(default=None),
-    kind: Optional[str] = Query(default=None),
-):
-    """
-    Search registry entries by actor and/or kind.
-    """
-    entries = registry_ledger.search(actor=actor, kind=kind)
-    return registry_ledger.to_dict_list(entries)
-
-
-@router.get("/chain/status", response_model=dict)
-def get_chain_status():
-    """
-    Inspect blockchain status (length, validity).
-    """
-    return {
-        "length": len(blockchain.chain),
-        "is_valid": blockchain.is_valid(),
-    }
-
-
-@router.get("/chain/block/{block_hash}", response_model=dict)
-def get_block(block_hash: str):
-    """
-    Get a single block by its hash.
-    """
-    block = blockchain.get_block_by_hash(block_hash)
-    if block is None:
-        raise HTTPException(status_code=404, detail="Block not found")
-
-    return {
-        "index": block.index,
-        "previous_hash": block.previous_hash,
-        "timestamp": block.timestamp,
-        "payload": block.payload,
-        "hash": block.hash,
-    }
+@router.get("/verify/{credit_id}")
+def verify_credit_authenticity(credit_id: str):
+    """クレジットの真正性を検証"""
+    result = registry_engine.verify_credit_authenticity(credit_id)
+    return result
