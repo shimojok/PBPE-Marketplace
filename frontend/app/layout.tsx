@@ -40,6 +40,7 @@ export default function RootLayout({
     { href: '/dashboard/finance', label: 'Bonds & Insurance' },
     { href: '/dashboard/enterprise', label: 'Scope 3 × PBPE' },
     { href: '/dashboard/pbpe', label: 'PBPE Issuance' },
+    { href: '/dashboard/registry', label: 'PBPE Registry' },  // ← 追加
   ]
 
   return (
