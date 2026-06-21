@@ -85,11 +85,9 @@ class Blockchain:
             current = self._chain[i]
             previous = self._chain[i - 1]
 
-            # previous_hash consistency
             if current.previous_hash != previous.hash:
                 return False
 
-            # hash integrity
             expected_hash = self._compute_hash(
                 index=current.index,
                 previous_hash=current.previous_hash,
