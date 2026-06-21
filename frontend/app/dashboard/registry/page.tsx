@@ -1,256 +1,287 @@
-"use client";
+'use client'
 
-import React, { useEffect, useState } from "react";
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardContent,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Table, Tbody, Td, Th, Thead, Tr } from "@/components/ui/table";
+import { useState, useEffect } from 'react'
+
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
 
 type RegistryEntry = {
-  id: string;
-  kind: string;
-  subject_id: string;
-  actor: string;
-  amount: number;
-  unit: string;
-  timestamp: number;
-  chain_hash: string | null;
-};
-
-type ChainStatus = {
-  length: number;
-  is_valid: boolean;
-};
-
-const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:8000";
+  id: string
+  kind: string
+  subject_id: string
+  actor: string
+  amount: number
+  unit: string
+  timestamp: number
+  chain_hash?: string
+}
 
 export default function RegistryPage() {
-  const [entries, setEntries] = useState<RegistryEntry[]>([]);
-  const [chainStatus, setChainStatus] = useState<ChainStatus | null>(null);
+  const [entries, setEntries] = useState<RegistryEntry[]>([])
+  const [loading, setLoading] = useState(true)
+  const [selectedEntry, setSelectedEntry] = useState<RegistryEntry | null>(null)
+  const [filter, setFilter] = useState('')
+  const [chainStatus, setChainStatus] = useState<any>(null)
 
-  const [searchRptId, setSearchRptId] = useState("");
-  const [searchSubjectId, setSearchSubjectId] = useState("");
-  const [searchActor, setSearchActor] = useState("");
-  const [searchKind, setSearchKind] = useState("");
-
-  const [selectedEntry, setSelectedEntry] = useState<RegistryEntry | null>(null);
+  const fetchRegistry = async () => {
+    setLoading(true)
+    try {
+      const res = await fetch(`${API_BASE}/registry/summary`)
+      const data = await res.json()
+      if (data.entries) {
+        setEntries(data.entries)
+      }
+      setLoading(false)
+    } catch (err) {
+      console.error('Registry fetch error:', err)
+      setLoading(false)
+    }
+  }
 
   const fetchChainStatus = async () => {
-    const res = await fetch(`${API_BASE}/registry/chain/status`);
-    const data = await res.json();
-    setChainStatus(data);
-  };
-
-  const fetchAll = async () => {
-    const res = await fetch(`${API_BASE}/registry/search`);
-    const data = await res.json();
-    setEntries(data);
-    setSelectedEntry(null);
-  };
-
-  const searchByRptId = async () => {
-    if (!searchRptId) return;
-    const res = await fetch(`${API_BASE}/registry/${encodeURIComponent(searchRptId)}`);
-    if (!res.ok) return;
-    const data = await res.json();
-    setEntries([data]);
-    setSelectedEntry(data);
-  };
-
-  const searchBySubjectId = async () => {
-    if (!searchSubjectId) return;
-    const res = await fetch(
-      `${API_BASE}/registry/by-subject/${encodeURIComponent(searchSubjectId)}`
-    );
-    if (!res.ok) return;
-    const data = await res.json();
-    setEntries(data);
-    setSelectedEntry(null);
-  };
-
-  const searchByActorKind = async () => {
-    const params = new URLSearchParams();
-    if (searchActor) params.append("actor", searchActor);
-    if (searchKind) params.append("kind", searchKind);
-    const res = await fetch(`${API_BASE}/registry/search?${params.toString()}`);
-    if (!res.ok) return;
-    const data = await res.json();
-    setEntries(data);
-    setSelectedEntry(null);
-  };
+    try {
+      const res = await fetch(`${API_BASE}/registry/chain/status`)
+      const data = await res.json()
+      setChainStatus(data)
+    } catch (err) {
+      console.error('Chain status error:', err)
+    }
+  }
 
   useEffect(() => {
-    fetchAll();
-    fetchChainStatus();
-  }, []);
+    fetchRegistry()
+    fetchChainStatus()
+  }, [])
+
+  const filteredEntries = entries.filter(entry =>
+    entry.id.toLowerCase().includes(filter.toLowerCase()) ||
+    entry.actor.toLowerCase().includes(filter.toLowerCase()) ||
+    entry.subject_id.toLowerCase().includes(filter.toLowerCase())
+  )
+
+  const cardStyle = {
+    backgroundColor: '#1e293b',
+    border: '1px solid #334155',
+    borderRadius: '12px',
+    padding: '16px',
+    boxShadow: '0 1px 3px rgba(0,0,0,0.5)',
+  }
 
   const formatTimestamp = (ts: number) => {
-    return new Date(ts * 1000).toLocaleString();
-  };
+    return new Date(ts * 1000).toLocaleString()
+  }
 
   return (
-    <div className="flex flex-col gap-6">
-      <Card>
-        <CardHeader>
-          <CardTitle>PBPE Registry Explorer</CardTitle>
-        </CardHeader>
-        <CardContent className="flex flex-col gap-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            <div className="flex flex-col gap-2">
-              <label className="text-sm font-medium">Search by RPT-ID</label>
-              <div className="flex gap-2">
-                <Input
-                  value={searchRptId}
-                  onChange={(e) => setSearchRptId(e.target.value)}
-                  placeholder="RPT-XXXXXXX"
-                />
-                <Button onClick={searchByRptId}>Search</Button>
+    <div style={{ padding: "0" }}>
+      <h1 style={{ fontSize: "24px", fontWeight: "bold", marginBottom: "8px", color: "#f1f5f9" }}>
+        PBPE Registry Explorer
+      </h1>
+      <p style={{ color: "#94a3b8", marginBottom: "24px" }}>
+        Immutable ledger of all PBPE transactions — blockchain verified
+      </p>
+
+      {chainStatus && (
+        <div style={{ ...cardStyle, marginBottom: "24px" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "16px" }}>
+            <div style={{ textAlign: "center" }}>
+              <div style={{ fontSize: "14px", color: "#94a3b8" }}>Block Height</div>
+              <div style={{ fontSize: "24px", fontWeight: "bold", color: "#f1f5f9" }}>{chainStatus.block_count || 0}</div>
+            </div>
+            <div style={{ textAlign: "center" }}>
+              <div style={{ fontSize: "14px", color: "#94a3b8" }}>Chain Status</div>
+              <div style={{ fontSize: "20px", fontWeight: "bold", color: chainStatus.chain_valid ? "#22c55e" : "#ef4444" }}>
+                {chainStatus.chain_valid ? '✅ Valid' : '❌ Invalid'}
               </div>
             </div>
-
-            <div className="flex flex-col gap-2">
-              <label className="text-sm font-medium">Search by Subject ID</label>
-              <div className="flex gap-2">
-                <Input
-                  value={searchSubjectId}
-                  onChange={(e) => setSearchSubjectId(e.target.value)}
-                  placeholder="CRD- / BND- / TRD- / KPI-"
-                />
-                <Button onClick={searchBySubjectId}>Search</Button>
-              </div>
-            </div>
-
-            <div className="flex flex-col gap-2">
-              <label className="text-sm font-medium">Search by Actor / Kind</label>
-              <div className="flex gap-2">
-                <Input
-                  value={searchActor}
-                  onChange={(e) => setSearchActor(e.target.value)}
-                  placeholder="Actor (company / gov)"
-                />
-                <Input
-                  value={searchKind}
-                  onChange={(e) => setSearchKind(e.target.value)}
-                  placeholder="kind (credit_issuance, scope3_report, ...)"
-                />
-                <Button onClick={searchByActorKind}>Search</Button>
+            <div style={{ textAlign: "center" }}>
+              <div style={{ fontSize: "14px", color: "#94a3b8" }}>Latest Hash</div>
+              <div style={{ fontSize: "12px", color: "#94a3b8", fontFamily: "monospace", wordBreak: "break-all" }}>
+                {chainStatus.latest_hash ? chainStatus.latest_hash.substring(0, 16) + '...' : 'N/A'}
               </div>
             </div>
           </div>
+        </div>
+      )}
 
-          <div className="flex justify-between items-center mt-4">
-            <Button variant="outline" onClick={fetchAll}>
-              Load All Entries
-            </Button>
-            {chainStatus && (
-              <div className="text-sm text-muted-foreground">
-                Chain length: <span className="font-semibold">{chainStatus.length}</span>{" "}
-                | Valid:{" "}
-                <span
-                  className={
-                    chainStatus.is_valid ? "text-green-600 font-semibold" : "text-red-600 font-semibold"
-                  }
-                >
-                  {chainStatus.is_valid ? "YES" : "NO"}
+      <div style={{ ...cardStyle, marginBottom: "24px" }}>
+        <div style={{ display: "flex", gap: "12px", alignItems: "center", flexWrap: "wrap" }}>
+          <input
+            type="text"
+            placeholder="Search by ID, Actor, or Subject..."
+            value={filter}
+            onChange={(e) => setFilter(e.target.value)}
+            style={{
+              flex: 1,
+              padding: "10px 14px",
+              borderRadius: "8px",
+              border: "1px solid #334155",
+              backgroundColor: "#0f172a",
+              color: "#f1f5f9",
+              fontSize: "14px",
+              minWidth: "200px",
+            }}
+          />
+          <button
+            onClick={fetchRegistry}
+            style={{
+              padding: "10px 20px",
+              borderRadius: "8px",
+              border: "none",
+              backgroundColor: "#3b82f6",
+              color: "white",
+              fontWeight: "bold",
+              cursor: "pointer",
+            }}
+          >
+            🔄 Refresh
+          </button>
+        </div>
+      </div>
+
+      <div style={cardStyle}>
+        <h3 style={{ fontSize: "16px", fontWeight: "bold", marginBottom: "16px", color: "#f1f5f9" }}>
+          Registry Entries {entries.length > 0 && `(${entries.length})`}
+        </h3>
+
+        {loading ? (
+          <div style={{ textAlign: "center", color: "#94a3b8", padding: "40px" }}>Loading registry entries...</div>
+        ) : filteredEntries.length === 0 ? (
+          <div style={{ textAlign: "center", color: "#94a3b8", padding: "40px" }}>
+            {entries.length === 0 ? 'No registry entries found. Issuing PBPE will create entries.' : 'No entries match your search.'}
+          </div>
+        ) : (
+          <div style={{ overflowX: "auto" }}>
+            <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "14px" }}>
+              <thead>
+                <tr style={{ borderBottom: "1px solid #334155" }}>
+                  <th style={{ textAlign: "left", padding: "10px 8px", color: "#94a3b8" }}>Registry ID</th>
+                  <th style={{ textAlign: "left", padding: "10px 8px", color: "#94a3b8" }}>Kind</th>
+                  <th style={{ textAlign: "left", padding: "10px 8px", color: "#94a3b8" }}>Subject</th>
+                  <th style={{ textAlign: "left", padding: "10px 8px", color: "#94a3b8" }}>Actor</th>
+                  <th style={{ textAlign: "right", padding: "10px 8px", color: "#94a3b8" }}>Amount</th>
+                  <th style={{ textAlign: "left", padding: "10px 8px", color: "#94a3b8" }}>Chain</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredEntries.map((entry) => (
+                  <tr
+                    key={entry.id}
+                    onClick={() => setSelectedEntry(entry)}
+                    style={{
+                      borderBottom: "1px solid #1e293b",
+                      cursor: "pointer",
+                      transition: "background 0.15s",
+                    }}
+                    onMouseEnter={(e) => e.currentTarget.style.backgroundColor = "#1e293b"}
+                    onMouseLeave={(e) => e.currentTarget.style.backgroundColor = "transparent"}
+                  >
+                    <td style={{ padding: "10px 8px", color: "#f1f5f9", fontFamily: "monospace", fontSize: "12px" }}>
+                      {entry.id}
+                    </td>
+                    <td style={{ padding: "10px 8px", color: "#94a3b8" }}>
+                      <span style={{
+                        display: "inline-block",
+                        padding: "2px 10px",
+                        borderRadius: "12px",
+                        fontSize: "11px",
+                        backgroundColor: entry.kind === 'credit_issuance' ? '#1a3a2a' :
+                                       entry.kind === 'credit_retirement' ? '#3a1a1a' :
+                                       entry.kind === 'credit_trade' ? '#1a2a3a' :
+                                       '#2a2a2a',
+                        color: entry.kind === 'credit_issuance' ? '#22c55e' :
+                               entry.kind === 'credit_retirement' ? '#ef4444' :
+                               entry.kind === 'credit_trade' ? '#3b82f6' :
+                               '#94a3b8',
+                      }}>
+                        {entry.kind}
+                      </span>
+                    </td>
+                    <td style={{ padding: "10px 8px", color: "#94a3b8", fontFamily: "monospace", fontSize: "12px" }}>
+                      {entry.subject_id}
+                    </td>
+                    <td style={{ padding: "10px 8px", color: "#94a3b8" }}>{entry.actor}</td>
+                    <td style={{ padding: "10px 8px", textAlign: "right", color: "#f1f5f9" }}>
+                      {entry.amount.toLocaleString()} {entry.unit}
+                    </td>
+                    <td style={{ padding: "10px 8px", textAlign: "center" }}>
+                      {entry.chain_hash ? (
+                        <span style={{ color: "#22c55e" }}>✅</span>
+                      ) : (
+                        <span style={{ color: "#64748b" }}>⏳</span>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
+
+      {selectedEntry && (
+        <div
+          onClick={() => setSelectedEntry(null)}
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            backgroundColor: "rgba(0,0,0,0.7)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 1000,
+          }}
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              backgroundColor: "#1e293b",
+              border: "1px solid #334155",
+              borderRadius: "16px",
+              padding: "32px",
+              maxWidth: "500px",
+              width: "90%",
+              boxShadow: "0 20px 60px rgba(0,0,0,0.8)",
+              position: "relative",
+            }}
+          >
+            <button
+              onClick={() => setSelectedEntry(null)}
+              style={{
+                position: "absolute",
+                top: "12px",
+                right: "16px",
+                background: "none",
+                border: "none",
+                color: "#94a3b8",
+                fontSize: "24px",
+                cursor: "pointer",
+              }}
+            >
+              ✕
+            </button>
+            <div style={{ fontSize: "20px", fontWeight: "bold", color: "#f1f5f9", marginBottom: "16px" }}>
+              {selectedEntry.id}
+            </div>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px", color: "#94a3b8", fontSize: "14px" }}>
+              <div><strong style={{ color: "#f1f5f9" }}>Kind:</strong> {selectedEntry.kind}</div>
+              <div><strong style={{ color: "#f1f5f9" }}>Subject:</strong> {selectedEntry.subject_id}</div>
+              <div><strong style={{ color: "#f1f5f9" }}>Actor:</strong> {selectedEntry.actor}</div>
+              <div><strong style={{ color: "#f1f5f9" }}>Amount:</strong> {selectedEntry.amount.toLocaleString()} {selectedEntry.unit}</div>
+              <div style={{ gridColumn: "span 2" }}>
+                <strong style={{ color: "#f1f5f9" }}>Timestamp:</strong> {formatTimestamp(selectedEntry.timestamp)}
+              </div>
+              <div style={{ gridColumn: "span 2" }}>
+                <strong style={{ color: "#f1f5f9" }}>Chain Hash:</strong>
+                <span style={{ fontFamily: "monospace", fontSize: "12px", color: "#94a3b8", wordBreak: "break-all" }}>
+                  {selectedEntry.chain_hash || 'Not yet recorded'}
                 </span>
               </div>
-            )}
+            </div>
           </div>
-        </CardContent>
-      </Card>
-
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <Card className="lg:col-span-2">
-          <CardHeader>
-            <CardTitle>Registry Entries</CardTitle>
-          </CardHeader>
-          <CardContent className="overflow-x-auto">
-            <Table>
-              <Thead>
-                <Tr>
-                  <Th>ID</Th>
-                  <Th>Kind</Th>
-                  <Th>Subject</Th>
-                  <Th>Actor</Th>
-                  <Th>Amount</Th>
-                  <Th>Unit</Th>
-                  <Th>Timestamp</Th>
-                  <Th>Chain</Th>
-                </Tr>
-              </Thead>
-              <Tbody>
-                {entries.map((e) => (
-                  <Tr
-                    key={e.id}
-                    className="cursor-pointer hover:bg-muted"
-                    onClick={() => setSelectedEntry(e)}
-                  >
-                    <Td>{e.id}</Td>
-                    <Td>{e.kind}</Td>
-                    <Td>{e.subject_id}</Td>
-                    <Td>{e.actor}</Td>
-                    <Td>{e.amount}</Td>
-                    <Td>{e.unit}</Td>
-                    <Td>{formatTimestamp(e.timestamp)}</Td>
-                    <Td>
-                      {e.chain_hash ? (
-                        <span className="text-green-600 font-semibold">✔</span>
-                      ) : (
-                        <span className="text-red-600 font-semibold">✖</span>
-                      )}
-                    </Td>
-                  </Tr>
-                ))}
-              </Tbody>
-            </Table>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Entry Details</CardTitle>
-          </CardHeader>
-          <CardContent>
-            {selectedEntry ? (
-              <div className="flex flex-col gap-2 text-sm">
-                <div>
-                  <span className="font-semibold">ID:</span> {selectedEntry.id}
-                </div>
-                <div>
-                  <span className="font-semibold">Kind:</span> {selectedEntry.kind}
-                </div>
-                <div>
-                  <span className="font-semibold">Subject:</span> {selectedEntry.subject_id}
-                </div>
-                <div>
-                  <span className="font-semibold">Actor:</span> {selectedEntry.actor}
-                </div>
-                <div>
-                  <span className="font-semibold">Amount:</span> {selectedEntry.amount}{" "}
-                  {selectedEntry.unit}
-                </div>
-                <div>
-                  <span className="font-semibold">Timestamp:</span>{" "}
-                  {formatTimestamp(selectedEntry.timestamp)}
-                </div>
-                <div>
-                  <span className="font-semibold">Chain Hash:</span>{" "}
-                  {selectedEntry.chain_hash ?? "N/A"}
-                </div>
-              </div>
-            ) : (
-              <div className="text-sm text-muted-foreground">
-                Select a registry entry from the table to see details.
-              </div>
-            )}
-          </CardContent>
-        </Card>
-      </div>
+        </div>
+      )}
     </div>
-  );
+  )
 }
