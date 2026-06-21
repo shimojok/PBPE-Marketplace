@@ -10,8 +10,8 @@ from __future__ import annotations
 from dataclasses import dataclass, asdict
 from typing import Optional, List
 
-from backend.blockchain.chain import blockchain
-from backend.utils.identifier import generate_pbpe_id, IdKind
+from blockchain.chain import blockchain
+from utils.identifier import generate_pbpe_id, IdKind
 
 
 @dataclass
