@@ -1,8 +1,12 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+# ルーターのインポート（すべて）
+from routers import dashboard, credits, impact, bonds, insurance, scope3, users, registry
+
 app = FastAPI(title="PBPE Marketplace API", version="1.0.0")
 
+# CORS設定
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -11,9 +15,14 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# ルートエンドポイント
 @app.get("/")
 def root():
     return {"message": "PBPE Marketplace API is running"}
+
+# ============================================================
+# ダッシュボード用エンドポイント
+# ============================================================
 
 @app.get("/dashboard/summary")
 def get_summary():
@@ -93,3 +102,16 @@ def get_pbpe():
             "health_pbpe": 20000000
         }
     }
+
+# ============================================================
+# ルーターの登録（すべて）
+# ============================================================
+
+app.include_router(dashboard.router)
+app.include_router(credits.router)
+app.include_router(impact.router)
+app.include_router(bonds.router)
+app.include_router(insurance.router)
+app.include_router(scope3.router)
+app.include_router(users.router)
+app.include_router(registry.router)   # ← Registryエンドポイント
