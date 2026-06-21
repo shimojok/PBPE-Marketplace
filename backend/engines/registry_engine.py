@@ -16,7 +16,7 @@ from typing import Dict, List, Optional, Any
 from dataclasses import dataclass, asdict
 from enum import Enum
 
-from backend.blockchain.ledger import registry_ledger, RegistryEntry
+from blockchain.ledger import registry_ledger, RegistryEntry
 
 
 class RegistryEntryKind(Enum):
@@ -219,7 +219,7 @@ class RegistryEngine:
         
         is_valid = len(issuance) > 0 and len(retirements) == 0
         
-        from backend.blockchain.chain import blockchain
+        from blockchain.chain import blockchain
         
         return {
             "credit_id": credit_id,
@@ -233,7 +233,7 @@ class RegistryEngine:
     
     def get_chain_status(self) -> Dict[str, Any]:
         """ブロックチェーン状態"""
-        from backend.blockchain.chain import blockchain
+        from blockchain.chain import blockchain
         
         return {
             "block_count": len(blockchain.chain),

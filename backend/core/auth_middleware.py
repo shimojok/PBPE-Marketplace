@@ -1,5 +1,5 @@
 from fastapi import Header, HTTPException
-from backend.core.security import verify_token
+from core.security import verify_token
 
 def require_auth(token: str = Header(None)):
     if not token:
