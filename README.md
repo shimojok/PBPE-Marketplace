@@ -47,10 +47,8 @@ These dashboards are essential for:
 PBPE‑UID is the **global address system for planetary value**.
 
 ```
-
+Example PBPE‑UID Code:
 AAA‑1234
-
-コード
 
 ```
 
