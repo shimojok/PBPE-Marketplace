@@ -1,224 +1,282 @@
-# **PBPE Marketplace**
-### _The Financial Layer of the Planetary Bio‑Positive Operating System (PBPE‑OS)_
+# 🌍 **PBPE Marketplace**
 
-Transforming real-world climate, agriculture, biosecurity, and health impact  
-into **standardized, investable, auditable financial value**.
+### _The Operating System for Earth, Agriculture, Climate, and Health_
 
-PBPE Marketplace is Layer 4 of PBPE‑OS — the global operating system for planetary regeneration.
+`[この結果は、表示するには安全でなかったようです。切り替えて、別のことを試してみましょう!]`
 
----
+**ROI 344% | Payback 3.5 months | 510 MtCO₂e GHG Reduction | Green Premium +40–60%**
 
-# 🚀 **Overview**
+> _“From Cost to Profit — The world’s first planetary-scale economic engine that turns climate action into financial return.”_
 
-PBPE Marketplace converts real-world impact into **PBPE (Planetary Bio‑Positive Effect)**,  
-a unified asset class backed by:
+# 📄 Slide Decks
 
-- CO₂ & GHG reduction  
-- Soil carbon regeneration  
-- Microbiome improvement (MBT55)  
-- Food loss reduction  
-- Quality enhancement  
-- Biosecurity stabilization  
-- Medical cost reduction  
+- **PBPE Marketplace (Impact Version)** `./docs/slides/PBPE_Marketplace_en_s.pdf`
+    
+- **Planetary Health Unified API (Full PBPE Model)** `./docs/slides/The_Planetary_Health_Unified_API_s.pdf`
+    
+- **PH‑API (Impact Engine / 7‑Digit Code Integration)** `./docs/slides/PH-API_s.pdf`
+    
 
-PBPE Marketplace enables:
+# 🚀 Overview
 
-- Automated MRV  
-- Transparent impact verification  
-- Standardized PBPE financial products  
-- Real-time settlement  
-- Regenerative value distribution (40/40/20)  
-- Scope 3 decarbonization through agricultural purchases  
-- API‑based integration for enterprises, governments, and investors  
+PBPE Marketplace transforms real-world impact into **PBPE (Planetary Bio‑Positive Effect)** — a unified, auditable, investable asset class backed by:
 
----
+- CO₂ & GHG reduction
+    
+- Soil carbon regeneration
+    
+- Microbiome improvement (MBT55)
+    
+- Food loss reduction
+    
+- Quality enhancement
+    
+- Biosecurity stabilization
+    
+- Medical cost reduction
+    
 
-# 🌱 **Core Insight: Agricultural Products = Carbon Credits**
+PBPE Marketplace is **Layer 4** of the Planetary Bio‑Positive Operating System (PBPE‑OS).
 
-In PBPE‑OS:
+# 🔢 **PBPE‑UID: The 7‑Digit Universal Identifier**
 
-> **Purchasing agricultural products is equivalent to purchasing carbon credits.**
+### _The Global Address System for Planetary Value_
 
-Because MBT55 / AGRIX / PBPE Cycle generate:
+PBPE‑UID is a **7‑digit universal identifier** that allows:
 
-- Waste-to-resource conversion  
-- Up to **84% cost reduction**  
-- Soil regeneration & humus formation  
-- CO₂ sequestration & N₂O/CH₄ reduction  
-- Higher yield & quality  
-- Extended freshness → reduced food loss  
-- Improved human health → reduced medical costs  
+- AI/AI agents
+    
+- Enterprises
+    
+- Governments
+    
+- Financial institutions
+    
+- Developers
+    
 
-Therefore:
+to access PBPE Marketplace assets with **zero ambiguity**.
 
-- Agricultural production **generates PBPE value**  
-- PBPE is **traceable, auditable, monetizable**  
-- Corporate buyers can count PBPE as **Scope 3 reduction**  
+## **PBPE‑UID Format**
 
-This is the foundation of PBPE Marketplace.
+コード
 
----
+```
+AAA‑1234
+```
+
+### **Prefix (3 letters) — Asset Type**
+
+|Prefix|Meaning|
+|---|---|
+|CRD|PBPE Credits|
+|BND|PBPE Bonds|
+|INS|PBPE Insurance|
+|FRM|Farm / Producer|
+|ORG|Enterprise|
+|COF|Coffee Sector|
+|HLT|HealthBook / Medical|
+|MBT|MBT55 Biosecurity|
+
+### **Sequence (4 chars) — Base36**
+
+- 1,679,616 combinations
+    
+- Collision‑resistant
+    
+- AI‑friendly
+    
+- Human‑readable
+    
+
+# 🌐 **Why PBPE‑UID Matters**
+
+## **1. Zero Double‑Counting (Blockchain Registry)**
+
+PBPE‑UID is written into the PBPE Registry:
+
+- Prevents double issuance
+    
+- Prevents double counting
+    
+- Ensures full traceability
+    
+- Enables cryptographic auditability
+    
+
+## **2. AI‑Native Access Layer**
+
+AI agents can:
+
+- Issue PBPE
+    
+- Verify PBPE
+    
+- Trade PBPE
+    
+- Build PBPE portfolios
+    
+- Generate Scope 3 reports
+    
+- Trigger PBPE‑based subsidies
+    
+
+PBPE‑UID becomes the **address system for AI‑driven climate finance**.
+
+## **3. Economic Impact**
+
+### ✔ **Agriculture**
+
+- PBPE‑UID enables farm‑level PBPE issuance
+    
+- Farmers gain **dual income** (crop + PBPE)
+    
+- Transparent crediting increases trust and price premiums
+    
+
+### ✔ **Climate Finance**
+
+- PBPE becomes a **multi‑dimensional climate asset**
+    
+- Liquidity increases
+    
+- PBPE‑backed bonds become globally tradable
+    
+
+### ✔ **Health**
+
+- HealthBook → PBPE conversion
+    
+- Medical cost reduction becomes a financial asset
+    
+
+### ✔ **Government**
+
+- Automated subsidy routing
+    
+- Real‑time policy dashboards
+    
+- Verified regional climate/health metrics
+    
 
 # 🧠 **How PBPE Marketplace Works**
 
-```
-
-Real-World Action (AGRIX / HealthBook / MBT55) ↓ ImpactIntent (PH‑API) ↓ PBPE Value Computed (Dashboard v3) ↓ PBPE Financial Products (Credits, Bonds, Insurance) ↓ Investors Allocate Capital ↓ Settlement & 40/40/20 Distribution
+コード
 
 ```
+Real-World Action (AGRIX / MBT55 / HealthBook)
+↓
+ImpactIntent (PH‑API)
+↓
+PBPE Value Computed (Dashboard v3)
+↓
+PBPE‑UID Issuance (7‑Digit Code)
+↓
+PBPE Registry (Blockchain)
+↓
+PBPE Financial Products (Credits, Bonds, Insurance)
+↓
+Investors Allocate Capital
+↓
+40/40/20 Distribution
+```
 
----
+# 🧬 **PBPE Impact Engine (PH‑API)**
 
-# 📦 **PBPE Financial Products**
+### **PH‑API Components**
+
+- **ImpactIntent** — defines CO₂, soil, health, microbiome impact
+    
+- **ImpactSource** — AGRIX, PBPE, HealthBook, MBT55
+    
+- **ImpactWebhook** — instant MRV
+    
+- **ImpactCheckout** — auto‑generated UI
+    
+- **ImpactConnect** — instant value distribution
+    
+
+### **PBPE Value Flywheel (7‑Step Cycle)**
+
+1. Capital Input
+    
+2. Ecological Regeneration
+    
+3. Productivity Boost
+    
+4. PBPE Issuance
+    
+5. Value Distribution
+    
+6. Economic Return
+    
+7. Reinvestment
+    
+
+# 💱 PBPE Financial Products
 
 Standardized under **PBPE‑FIN‑001**:
 
-- PBPE Carbon Income Bonds  
-- Regenerative Agriculture Bonds  
-- Health Impact Bonds  
-- Soil Carbon Credits  
-- Coffee Resilience Credits  
-- Microbiome Health Credits  
-- Preventive Health Insurance  
-- Agricultural Protection Products  
+- PBPE Carbon Income Bonds
+    
+- Regenerative Agriculture Bonds
+    
+- Health Impact Bonds
+    
+- Soil Carbon Credits
+    
+- Coffee Resilience Credits
+    
+- Microbiome Health Credits
+    
+- Preventive Health Insurance
+    
+- Agricultural Protection Products
+    
 
----
-
-# 🧮 **PBPE Impact Engine (Layer 2 → Layer 3)**
-
-Integrates:
-
-- AGRIX soil MRV  
-- MBT55 microbiome improvement  
-- HealthBook medical cost reduction  
-- PBPE climate value  
-- Yield stability  
-- Water efficiency  
-
-Outputs a unified PBPE value per Intent.
-
----
-
-# 📊 **PBPE Registry & Ledger**
+# 📊 PBPE Registry & Ledger
 
 Ensures:
 
-- Unique PBPE issuance  
-- Zero double-counting  
-- Full traceability  
-- Settlement records  
-- Distribution records  
-- Audit trails  
+- Unique PBPE issuance
+    
+- Zero double-counting
+    
+- Full traceability
+    
+- Settlement records
+    
+- Distribution records
+    
+- Audit trails
+    
 
----
+# 🧭 PBPE‑OS Architecture
 
-# 🧮 **PBPE Rating Engine**
-
-Risk factors:
-
-- Intent Reliability Score (IRS)  
-- Data Quality Score (DQS)  
-- Regional Risk Score (RRS)  
-- PBPE Volatility Index (PVI)  
-- PBPE Default Probability (PDP)  
-
-Outputs: **PBPE‑A / PBPE‑B / PBPE‑C / PBPE‑D**
-
----
-
-# 💸 **Settlement & Distribution (40/40/20)**
-
-When PBPE is realized:
-
-- **40%** → Actor (farmer, company, individual)  
-- **40%** → PBPE / Climate / Health Funds  
-- **20%** → Platform (BioNexus)  
-
-A regenerative capital loop.
-
----
-
-# 📈 **Dashboards (Layer 2 → Layer 4)**
-
-### **Investor Dashboard**
-- PBPE portfolio  
-- Yield & risk  
-- Impact metrics  
-- ESG alignment  
-
-### **Issuer Dashboard**
-- Product issuance  
-- MRV status  
-- Settlement events  
-- Impact reporting  
-
-### **PBPE Dashboard v3 (Unified View)**
-- Global KPIs  
-- GHG breakdown  
-- PBPE issuance  
-- Value Flywheel  
-- PBPE Credit Market  
-- PBPE‑Backed Bonds  
-- Enterprise Scope 3 metrics  
-
----
-
-# 🧭 **PBPE‑OS Architecture (Layer 1–5)**
+コード
 
 ```
-
-Layer 1: MBT‑Biosecurity‑Engine Layer 2: PBPE Dashboard (KPI Engine) Layer 3: PBPE Finance (Credits & Bonds) Layer 4: PBPE Marketplace (This Repository) Layer 5: PBPE Reporting (ESG & Scope 3)
-
+Layer 1: MBT‑Biosecurity‑Engine
+Layer 2: PBPE Dashboard (KPI Engine)
+Layer 3: PBPE Finance (Credits & Bonds)
+Layer 4: PBPE Marketplace (This Repository)
+Layer 5: PBPE Reporting (ESG & Scope 3)
 ```
 
-Architecture diagram:  
-![PBPE Marketplace Architecture](docs/architecture/pbpe-architecture.svg)
+# 🌍 Vision
 
----
+PBPE Marketplace establishes **planetary value as a global asset class**, creating a financial system where:
 
-# 🔧 **Repository Structure**
+- Soil regeneration
+    
+- CO₂ reduction
+    
+- Microbiome improvement
+    
+- Medical cost reduction
+    
+- Waste‑to‑resource cycles
+    
 
-```
-
-pbpe-marketplace/ │ ├── README.md ├── docs/ │ ├── credits/ │ │ └── PBPE_Credits_Specification.md │ ├── dashboard/ │ │ ├── PBPE_Dashboard_Architecture.md │ │ ├── PBPE_Dashboard_v3_UI_Mockup.md │ │ └── PBPE_Dashboard_v3_API_IO.md │ ├── finance/ │ │ └── PBPE_Backed_Bond_Specification.md │ └── architecture/ │ └── pbpe-architecture.svg │ ├── api/ │ └── openapi/ │ └── openapi.yaml ← PBPE‑Marketplace API (OpenAPI 3.1 v1.0) │ ├── backend/ │ ├── main.py │ ├── routers/ │ │ ├── dashboard.py │ │ ├── credits.py │ │ ├── impact.py │ │ ├── products.py │ │ ├── users.py │ │ └── bonds.py │ └── models/ │ ├── credits.py │ ├── impact.py │ ├── products.py │ ├── users.py │ └── bonds.py │ └── frontend/ └── (Dashboard v3 implementation)
-
-```
-
----
-
-# 📘 **API Specification (OpenAPI 3.1)**
-
-Full API spec:  
-```
-
-api/openapi/openapi.yaml
-
-```
-
-Includes:
-
-- Dashboard API  
-- Credits API  
-- Impact API  
-- Finance (PBPE‑Backed Bonds)  
-- Products API  
-- Users API  
-
----
-
-# 🌍 **Vision**
-
-PBPE Marketplace establishes **planetary value as a global asset class**,  
-creating a financial system where:
-
-- Soil regeneration  
-- CO₂ reduction  
-- Microbiome improvement  
-- Medical cost reduction  
-- Waste-to-resource cycles  
-
-are not externalities,  
-but **primary sources of economic value**.
-
-PBPE Marketplace is the economic engine of PBPE‑OS.
+are not externalities, but **primary sources of economic value**.
 
