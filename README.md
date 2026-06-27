@@ -1,3 +1,7 @@
+# PBPE Marketplace
+
+![Header](./docs/images/header.png)
+
 # 🌍 **PBPE Marketplace**
 
 ### _The Operating System for Earth, Agriculture, Climate, and Health_
