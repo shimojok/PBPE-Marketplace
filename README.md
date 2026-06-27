@@ -2,7 +2,6 @@
 
 ### _The Operating System for Earth, Agriculture, Climate, and Health_
 
-`[この結果は、表示するには安全でなかったようです。切り替えて、別のことを試してみましょう!]`
 
 **ROI 344% | Payback 3.5 months | 510 MtCO₂e GHG Reduction | Green Premium +40–60%**
 
