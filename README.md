@@ -17,6 +17,9 @@
 - **Planetary Health Unified API (Full PBPE Model)**  
   [The_Planetary_Health_Unified_API_s.pdf](./docs/slides/The_Planetary_Health_Unified_API_s.pdf)
 
+  [The_Planetary_Health_Unified_API_s.pdf](./docs/slides/The_Planetary_Health_Unified_API_s.pdf)
+
+
 - **PH‑API (Impact Engine / 7‑Digit Code Integration)**  
   [PH-API_s.pdf](./docs/slides/PH-API_s.pdf)
 
