@@ -12,13 +12,14 @@
 # 📄 Slide Decks
 
 - **PBPE Marketplace (Impact Version)**  
-  `./docs/slides/PBPE_Marketplace_en_s.pdf`
+  [PBPE_Marketplace_en_s.pdf](./docs/slides/PBPE_Marketplace_en_s.pdf)
 
 - **Planetary Health Unified API (Full PBPE Model)**  
-  `./docs/slides/The_Planetary_Health_Unified_API_s.pdf`
+  [The_Planetary_Health_Unified_API_s.pdf](./docs/slides/The_Planetary_Health_Unified_API_s.pdf)
 
 - **PH‑API (Impact Engine / 7‑Digit Code Integration)**  
-  `./docs/slides/PH-API_s.pdf`
+  [PH-API_s.pdf](./docs/slides/PH-API_s.pdf)
+
 
 ---
 
