@@ -52,19 +52,19 @@ AAA‑1234
 
 # 💱 グリーンプレミアム
 
-![Green Premium](./docs/images/green_premium.png)
+![Green Premium](./images/green_premium.png)
 
 ---
 
 # 🔄 PBPE Value Flywheel
 
-![Flywheel](./docs/images/flywheel.png)
+![Flywheel](./images/flywheel.png)
 
 ---
 
 # 🧠 Impact Engine（PH‑API）
 
-![Impact Engine](./docs/images/impact_engine.png)
+![Impact Engine](./images/impact_engine.png)
 
 ---
 
